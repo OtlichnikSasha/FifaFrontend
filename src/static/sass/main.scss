@@ -1,3 +1,223 @@
 @import "default";
 
+/* Регистрация и авторизация */
+.modal_window_place{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $grey;
+}
+.modal_window{
+  width: 50%;
+  height: 60%;
+  box-shadow: 2px 5px 5px 5px #c1c1c1;
+  border-radius: 15px;
+  padding: 15px 25px 5px;
+  background: #FFFFFF;
+}
+.label{
+  font-size: 18px;
+  margin: 10px 0;
+}
+.default_input{
+  border: 1px solid $grey;
+  border-radius: 5px;
+  padding: 10px 5px;
+  font-size: 16px;
+  width: 100%;
+}
+.default_input:focus{
+  border: 1px solid $grey;
+  box-shadow: 2px 1px 2px 1px #c1c1c1;
+  transition: box-shadow .3s;
+}
+.default_btn{
+  border: 1px solid $grey;
+  border-radius: 5px;
+  padding: 10px 5px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 30px;
+  background: #7adafb;
+}
+
+.notification{
+  transform: translate(120%, 0);
+  position: absolute;
+  bottom: 40px;
+  right: 15px;
+  transition: transform .4s;
+  width: auto;
+  min-width: 250px;
+  max-width: 350px;
+}
+.notification._active{
+  transform: translate(0, 0);
+  transition: transform .4s;
+}
+.notification_data{
+  border-radius: 5px;
+  font-weight: bold;
+}
+.notification_data.success{
+  background: #4ffa4f;
+}
+.notification_data.error{
+  background: #c90303;
+}
+.notification_heading{
+  text-align: center;
+  border-bottom: 2px solid $grey;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+.notification_text{
+  text-align: center;
+  font-size: 14px;
+  padding: 10px 20px;
+}
+
+/* Loader */
+.lds-roller {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  margin: 15px 0 0 30px;
+
+}
+
+.lds-roller div {
+  -webkit-animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  -webkit-transform-origin: 40px 40px;
+  -ms-transform-origin: 40px 40px;
+  transform-origin: 40px 40px;
+}
+
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1c9afa;
+  margin: -4px 0 0 -4px;
+}
+
+.lds-roller div:nth-child(1) {
+  -webkit-animation-delay: -0.036s;
+  animation-delay: -0.036s;
+}
+
+.lds-roller div:nth-child(1):after {
+  top: 63px;
+  left: 63px;
+}
+
+.lds-roller div:nth-child(2) {
+  -webkit-animation-delay: -0.072s;
+  animation-delay: -0.072s;
+}
+
+.lds-roller div:nth-child(2):after {
+  top: 68px;
+  left: 56px;
+}
+
+.lds-roller div:nth-child(3) {
+  -webkit-animation-delay: -0.108s;
+  animation-delay: -0.108s;
+}
+
+.lds-roller div:nth-child(3):after {
+  top: 71px;
+  left: 48px;
+}
+
+.lds-roller div:nth-child(4) {
+  -webkit-animation-delay: -0.144s;
+  animation-delay: -0.144s;
+}
+
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
+
+.lds-roller div:nth-child(5) {
+  -webkit-animation-delay: -0.18s;
+  animation-delay: -0.18s;
+}
+
+.lds-roller div:nth-child(5):after {
+  top: 71px;
+  left: 32px;
+}
+
+.lds-roller div:nth-child(6) {
+  -webkit-animation-delay: -0.216s;
+  animation-delay: -0.216s;
+}
+
+.lds-roller div:nth-child(6):after {
+  top: 68px;
+  left: 24px;
+}
+
+.lds-roller div:nth-child(7) {
+  -webkit-animation-delay: -0.252s;
+  animation-delay: -0.252s;
+}
+
+.lds-roller div:nth-child(7):after {
+  top: 63px;
+  left: 17px;
+}
+
+.lds-roller div:nth-child(8) {
+  -webkit-animation-delay: -0.288s;
+  animation-delay: -0.288s;
+}
+
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12px;
+}
+
+@-webkit-keyframes lds-roller {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes lds-roller {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* Top игроки */
+.heading_players_place{
+  display: flex;
+  align-items: center;
+}
+.heading_players{
+  border: 1px solid $grey;
+  padding: 5px 40px;
+}
+
 

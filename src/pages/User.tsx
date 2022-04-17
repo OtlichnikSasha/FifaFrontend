@@ -1,8 +1,8 @@
 import React, {FC, useEffect} from 'react';
 
-export const AuthRegistrationPage: FC = () => {
+export const User: FC = () => {
     useEffect(() => {
-        document.title = "Регистрация"
+        document.title = "Пользователь"
     }, [])
     return (
         <div>
