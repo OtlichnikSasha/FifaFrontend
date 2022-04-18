@@ -12,7 +12,7 @@ export const RegistrationPage: FC = () => {
     const {user, status, loading, error} = useTypedSelector(state => state.user)
 
     const [registrationData, setRegistrationData] = useState({
-        login: '',
+        username: '',
         password: '',
         repeatPassword: ''
     })
@@ -27,7 +27,7 @@ export const RegistrationPage: FC = () => {
     }
 
     const registration = () => {
-        if(!registrationData.login){
+        if(!registrationData.username){
             setFrontendError("Вы не ввели логин!")
             setNotificationStatus("error")
             setOpenNotification(true)
@@ -82,9 +82,9 @@ export const RegistrationPage: FC = () => {
                 </div>
                 <input
                     className="default_input"
-                    name="login"
+                    name="username"
                     onChange={changeHandler}
-                    value={registrationData.login}
+                    value={registrationData.username}
                 />
                 <div className="label">
                     Придумайте пароль
@@ -110,7 +110,7 @@ export const RegistrationPage: FC = () => {
                     Зарегистрироваться
                 </div>
                 <div className="offer_go_place">
-                    <Link to="/user/sign_in" className="offer_go">Уже есть аккаунт? Авторизоваться</Link>
+                    <span>Уже есть аккаунт?</span><Link to="/user/sign_in" className="offer_go">Авторизоваться</Link>
                 </div>
             </div>
         </div>

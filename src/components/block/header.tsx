@@ -1,15 +1,23 @@
 import React, {FC} from 'react';
 import {Link, NavLink} from "react-router-dom";
 import {useTypedSelector} from "../../hooks/useTypedSelector";
-
+import logo from "../../static/img/logo.jpg"
 export const Header: FC = () => {
     const {user, status, loading, error} = useTypedSelector(state => state.user)
     return (
         <header className="header">
             <div className="container">
-                <Link className="logo" to="/topPlayers">
-                    Logo
-                </Link>
+                <div className="logo_place">
+                    <Link to="/topPlayers">
+                        <img src={logo} className="logo_img"/>
+                    </Link>
+                    <Link className="logo" to="/topPlayers">
+                        <span>Fifa</span>
+                        <span>Mobile</span>
+                        <span>League</span>
+                    </Link>
+                    <div className="diagonal-line"/>
+                </div>
                 <nav className="nav">
                     <NavLink to="/results" className="nav_link">
                         Результаты матчей
@@ -17,6 +25,9 @@ export const Header: FC = () => {
                     <NavLink to="/topPlayers" className="nav_link">
                         ТОП игроки
                     </NavLink>
+                    <div className="diagonal-line"/>
+                </nav>
+                <div>
                     {
                         user ?
                             <NavLink to="/cabinet" className="nav_link">
@@ -33,7 +44,7 @@ export const Header: FC = () => {
                             </>
                     }
 
-                </nav>
+                </div>
             </div>
         </header>
     );

@@ -3,7 +3,13 @@ import {GamesState} from "../../types/index";
 import {getGames} from '../../api/index'
 
 const initialState : GamesState = {
-    games: [],
+    games: [
+        {id: 1, player1: "zhuzha", player2: 'zhuzha2', score: "2:1"},
+        {id: 2, player1: "zhuzha", player2: 'zhuzha2', score: "2:1"},
+        {id: 3, player1: "zhuzha", player2: 'zhuzha2', score: "2:4"},
+        {id: 4, player1: "zhuzha", player2: 'zhuzha2', score: "1:3"},
+        {id: 5, player1: "zhuzha", player2: 'zhuzha2', score: "1:1"},
+    ],
     status: null,
     error: null,
     loading: false

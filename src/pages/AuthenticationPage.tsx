@@ -12,9 +12,8 @@ export const AuthenticationPage: FC = () => {
     const {user, status, loading, error} = useTypedSelector(state => state.user)
 
     const [authData, setAuthData] = useState({
-        login: '',
+        username: '',
         password: '',
-        repeatPassword: ''
     })
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
@@ -27,7 +26,7 @@ export const AuthenticationPage: FC = () => {
     }
 
     const login = () => {
-        if (!authData.login) {
+        if (!authData.username) {
             setFrontendError("Вы не ввели логин!")
             setOpenNotification(true)
             setNotificationStatus("error")
@@ -63,9 +62,9 @@ export const AuthenticationPage: FC = () => {
                 </div>
                 <input
                     className="default_input"
-                    name="login"
+                    name="username"
                     onChange={changeHandler}
-                    value={authData.login}
+                    value={authData.username}
                 />
                 <div className="label">
                     Введите пароль
@@ -81,7 +80,7 @@ export const AuthenticationPage: FC = () => {
                 </div>
 
                 <div className="offer_go_place">
-                    <Link to="/user/sign_up" className="offer_go">Нет аккаунта? Зарегистрироваться</Link>
+                    <span>Нет аккаунта?</span><Link to="/user/sign_up" className="offer_go"> Зарегистрироваться</Link>
                 </div>
 
             </div>

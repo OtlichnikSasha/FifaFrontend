@@ -1,13 +1,12 @@
 @import "default";
 
-/* Регистрация и авторизация */
+/*=== Регистрация и авторизация ===*/
 .modal_window_place{
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: $grey;
 }
 .modal_window{
   width: 50%;
@@ -30,20 +29,26 @@
 }
 .default_input:focus{
   border: 1px solid $grey;
-  box-shadow: 2px 1px 2px 1px #c1c1c1;
+  box-shadow: 2px 1px 2px 1px $grey;
   transition: box-shadow .3s;
 }
 .default_btn{
   border: 1px solid $grey;
   border-radius: 5px;
   padding: 10px 5px;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   cursor: pointer;
   margin-top: 30px;
-  background: #7adafb;
+  background: $blue;
+  color: #FFFFFF;
+}
+.default_btn:hover{
+  box-shadow: 2px 1px 2px 1px $grey;
+  transition: box-shadow .3s;
 }
 
+/* Notification */
 .notification{
   transform: translate(120%, 0);
   position: absolute;
@@ -214,10 +219,93 @@
 .heading_players_place{
   display: flex;
   align-items: center;
+  width: 400px;
+  transition: background .3s;
+  .heading_players{
+    background: #1b4468;
+    color: #FFFFFF;
+    border-right: 1px solid #e6e4e4;
+    padding: 15px 0;
+    width: 200px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 2px;
+  }
+  .heading_players:last-child{
+    border: 0;
+  }
 }
-.heading_players{
-  border: 1px solid $grey;
-  padding: 5px 40px;
+.data_players_place{
+  display: flex;
+  align-items: center;
+  width: 400px;
+  border-bottom: 1px solid #e6e4e4;
+  margin-bottom: 2px;
+  transition: all .3s;
+  .heading_players{
+    padding: 15px 0;
+    width: 200px;
+    text-align: center;
+  }
+  .heading_players:last-child{
+    border: 0;
+  }
 }
+.data_players_place.gold{
+  color: #ffdb1e;
+  font-weight: bold;
+  font-size: 22px;
+}
+.data_players_place.silver{
+  color: #a2a2a2;
+  font-weight: bold;
+  font-size: 20px;
+}
+.data_players_place.bronze{
+  color: #875d1d;
+  font-weight: bold;
+  font-size: 18px;
+}
+.data_players_place:hover{
+  background: $blue;
+  color: #FFFFFF;
+  transition: all .3s;
+}
+
+/*=== Результаты матчей ===*/
+.games_card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e6e4e4;
+  padding: 10px 0;
+  width: 50%;
+}
+.games_card:first-child{
+  border-top: 2px solid #e6e4e4;
+}
+.games_card__teams_place{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.games_card__score_place{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.games_card__data{
+  padding-bottom: 15px;
+  font-size: 20px;
+}
+.games_card__data.winner{
+  font-weight: bold;
+}
+.games_card__data:last-child{
+  padding-bottom: 0;
+}
+
+
 
 
