@@ -5,7 +5,7 @@ import {useActions} from "../hooks/useActions";
 export const Index: FC = () => {
     useEffect(() => {
         document.title = "ТОП игроки"
-        // fetchUsers({})
+        fetchUsers({})
     }, [])
     const {fetchUsers} = useActions()
     return (

@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Loader} from "./block/loader";
 import {useTypedSelector} from "../hooks/useTypedSelector";
+import {Link} from "react-router-dom";
 
 export const GamesList: FC = () => {
     const {games, status, loading, error} = useTypedSelector(state => state.games)
@@ -13,13 +14,14 @@ export const GamesList: FC = () => {
                     return (
                         <div className="games_card" key={game.id}>
                             <div className="games_card__teams_place">
-                                <div
+                                <Link to={`/user/${game.players[0].id}`}
                                     className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.player1}
-                                </div>
-                                <div className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.player2}
-                                </div>
+                                    {game.players[0].username}
+                                </Link>
+                                <Link to={`/user/${game.players[1].id}`}
+                                    className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
+                                    {game.players[1].username}
+                                </Link>
                             </div>
                             <div className="games_card__score_place">
                                 <div className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>

@@ -6,8 +6,7 @@ export interface UserEntity{
 
 export interface GameEntity{
     id: number,
-    player1: string,
-    player2: string,
+    players: UserEntity[],
     score: string
 }
 

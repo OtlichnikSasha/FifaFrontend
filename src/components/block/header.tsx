@@ -35,10 +35,10 @@ export const Header: FC = () => {
                             </NavLink>
                             :
                             <>
-                                <NavLink to="/user/sign_in" className="nav_link">
+                                <NavLink to="/sign_in" className="nav_link">
                                     Вход
                                 </NavLink>
-                                <NavLink to="/user/sign_up" className="nav_link">
+                                <NavLink to="/sign_up" className="nav_link">
                                     Регистрация
                                 </NavLink>
                             </>

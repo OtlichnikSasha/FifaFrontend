@@ -5,7 +5,7 @@ import {useActions} from "../hooks/useActions";
 export const Results: FC = () => {
     useEffect(() => {
         document.title = "Результаты матчей"
-        // fetchGames({})
+        fetchGames({})
     }, [])
     const {fetchGames} = useActions()
     return (

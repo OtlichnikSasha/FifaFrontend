@@ -3,15 +3,7 @@ import {UsersState} from "../../types/index";
 import {getPlayers} from '../../api/index'
 
 const initialState : UsersState = {
-    users: [
-        {id: 1, username: "Durak", rating: 90},
-        {id: 2, username: "Durak2", rating: 90},
-        {id: 3, username: "Durak3", rating: 90},
-        {id: 4, username: "Durak4", rating: 90},
-        {id: 5, username: "Durak5", rating: 90},
-        {id: 6, username: "Durak6", rating: 90},
-        {id: 7, username: "Durak7", rating: 90}
-    ],
+    users: [],
     status: null,
     error: null,
     loading: false
