@@ -8,7 +8,7 @@ export class api {
             error: '',
         };
         try {
-                const res = await http.get(`api/${url}`, { params: { ...args } })
+                const res = await http.get(url, { params: { ...args } })
             console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
