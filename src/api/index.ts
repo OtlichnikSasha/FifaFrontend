@@ -1,13 +1,19 @@
 import { api } from '../http/api';
+import {UsersData} from "../store/reducers/usersReducer";
 
-export const getPlayer = async () => {
+export const getPlayerForCabinet = async () => {
     const url = `api/player`;
     return await api.get(url, {});
 };
 
 export const getPlayers = async (args: object) => {
     const url = `api/players`;
-    return await api.get(url, args);
+    return await api.get(url, {});
+};
+
+export const getPlayer = async (args: UsersData) => {
+    const url = `api/players/${args.id}`;
+    return await api.get(url, {});
 };
 
 export const login = async (args: object) => {

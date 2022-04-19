@@ -16,24 +16,30 @@
   padding: 15px 25px 5px;
   background: #FFFFFF;
 }
+@media screen and (max-width: 900px) {
+  .modal_window{
+    width: 80%;
+  }
+}
+
 .label{
   font-size: $fontSize;
   margin: 10px 0;
 }
 .default_input{
-  border: 1px solid $grey;
+  border: 1px solid #c1c0c0;
   border-radius: 5px;
   padding: 10px 5px;
   font-size: 16px;
   width: 100%;
 }
 .default_input:focus{
-  border: 1px solid $grey;
-  box-shadow: 2px 1px 2px 1px $grey;
+  border: 1px solid #c1c0c0;
+  box-shadow: 2px 1px 2px 1px #c1c0c0;
   transition: box-shadow .3s;
 }
 .default_btn{
-  border: 1px solid $grey;
+  border: 1px solid #c1c0c0;
   border-radius: 5px;
   padding: 10px 5px;
   font-size: $fontSize;
@@ -42,13 +48,25 @@
   margin-top: 30px;
   background: $blue;
   color: #FFFFFF;
+  transition: all .3s;
 }
 .default_btn:hover{
   box-shadow: 2px 1px 2px 1px $grey;
-  transition: box-shadow .3s;
+  transition: all .3s;
 }
-@media screen and (max-width: 800px) {
-  $fontSize: 15px;
+@media screen and (max-width: 550px) {
+  .label{
+    font-size: 15px;
+  }
+  .default_input{
+    font-size: 14px;
+  }
+  .default_btn{
+    margin-top: 15px;
+  }
+  .heading{
+    font-size: 24px;
+  }
 }
 /* Notification */
 .notification{
@@ -221,14 +239,14 @@
 .heading_players_place{
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 50%;
   transition: background .3s;
   .heading_players{
     background: #1b4468;
     color: #FFFFFF;
     border-right: 1px solid #e6e4e4;
     padding: 15px 0;
-    width: 200px;
+    width: 50%;
     text-align: center;
     font-weight: bold;
     border-radius: 2px;
@@ -240,17 +258,33 @@
 .data_players_place{
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 50%;
   border-bottom: 1px solid #e6e4e4;
   margin-bottom: 2px;
   transition: all .3s;
   .heading_players{
     padding: 15px 0;
-    width: 200px;
+    width: 50%;
     text-align: center;
   }
   .heading_players:last-child{
     border: 0;
+  }
+}
+@media screen and (max-width: 900px) and (min-width: 700px) {
+  .heading_players_place {
+    width: 80%;
+  }
+  .data_players_place{
+    width: 80%;
+  }
+}
+@media screen and (max-width: 700px) and (min-width: 200px) {
+  .heading_players_place {
+    width: 100%;
+  }
+  .data_players_place{
+    width: 100%;
   }
 }
 .data_players_place.gold{

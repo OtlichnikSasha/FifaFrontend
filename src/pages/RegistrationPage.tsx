@@ -110,7 +110,7 @@ export const RegistrationPage: FC = () => {
                     Зарегистрироваться
                 </div>
                 <div className="offer_go_place">
-                    <span>Уже есть аккаунт?</span><Link to="/sign_in" className="offer_go">Авторизоваться</Link>
+                    <span>Уже есть аккаунт?</span><Link to="/user/sign_in" className="offer_go">Авторизоваться</Link>
                 </div>
             </div>
         </div>

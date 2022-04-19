@@ -8,7 +8,11 @@ export class api {
             error: '',
         };
         try {
-                const res = await http.get(url, { params: { ...args } })
+                const res = await http.get(url, { params: { ...args }, headers:{
+                        "Access-Control-Allow-Origin": "*",
+                        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                        "Access-Control-Allow-Credentials": true
+                    }})
             console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
@@ -28,7 +32,9 @@ export class api {
             error: ''
         };
         try {
-            const res = await http.post(url, data)
+            const res = await http.post(url, data, { headers:{
+                'Access-Control-Allow-Origin': "*"
+            }})
             console.log('res', res)
             if (res.status === 200) {
                 result.status = true;

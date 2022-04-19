@@ -1,23 +1,29 @@
 import React, {FC, useEffect} from 'react';
 import {useActions} from "../hooks/useActions";
 import {useParams} from "react-router-dom"
+import {useTypedSelector} from "../hooks/useTypedSelector";
 
-interface UserParams{
+interface UserParams {
     id: string | undefined
 }
+
 export const User: FC = () => {
     console.log(useParams())
     // @ts-ignore
-    const {id}:UserParams = useParams()
+    const {id}: UserParams = useParams()
     useEffect(() => {
         document.title = "Пользователь"
-        fetchUsers({id})
+        fetchUser({id})
     }, [])
-    const {fetchUsers} = useActions()
+    const {fetchUser} = useActions()
+    const {users, status, loading, error} = useTypedSelector(state => state.users)
     return (
-        <div>
+        <div className="container">
+            <div className="user_data_place">
 
+            </div>
         </div>
     );
-};
+}
+    ;
 

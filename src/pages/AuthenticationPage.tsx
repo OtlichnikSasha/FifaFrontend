@@ -80,7 +80,7 @@ export const AuthenticationPage: FC = () => {
                 </div>
 
                 <div className="offer_go_place">
-                    <span>Нет аккаунта?</span><Link to="/sign_up" className="offer_go"> Зарегистрироваться</Link>
+                    <span>Нет аккаунта?</span><Link to="/user/sign_up" className="offer_go"> Зарегистрироваться</Link>
                 </div>
 
             </div>

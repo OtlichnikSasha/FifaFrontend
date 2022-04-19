@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UserState} from "../../types/index";
-import {getPlayer, login, registration} from '../../api/index'
+import {getPlayer, login, registration, getPlayerForCabinet} from '../../api/index'
 
 const initialState : UserState = {
     user: null,
@@ -9,10 +9,10 @@ const initialState : UserState = {
     loading: false
 };
 
-export const fetchUser = createAsyncThunk(
-    'user/fetchUser',
+export const fetchUserCabinet = createAsyncThunk(
+    'user/fetchUserCabinet',
     async () => {
-        return await getPlayer();
+        return await getPlayerForCabinet();
     }
 )
 
@@ -38,16 +38,16 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUser.pending, state => {
+            .addCase(fetchUserCabinet.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchUser.fulfilled, (state, action) => {
+            .addCase(fetchUserCabinet.fulfilled, (state, action) => {
                 console.log('user', action.payload)
                 state.loading = false
                 state.user = action.payload?.data
                 state.status = true
             })
-            .addCase(fetchUser.rejected, state => {
+            .addCase(fetchUserCabinet.rejected, state => {
                 state.loading = false
             })
             // Login
