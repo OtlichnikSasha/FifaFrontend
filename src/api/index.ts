@@ -2,17 +2,17 @@ import { api } from '../http/api';
 import {UsersData} from "../store/reducers/usersReducer";
 
 export const getPlayerForCabinet = async () => {
-    const url = `api/player`;
+    const url = `player`;
     return await api.get(url, {});
 };
 
 export const getPlayers = async (args: object) => {
-    const url = `api/players`;
-    return await api.get(url, {});
+    const url = `players`;
+    return await api.get(url, args);
 };
 
 export const getPlayer = async (args: UsersData) => {
-    const url = `api/players/${args.id}`;
+    const url = `players/${args.id}`;
     return await api.get(url, {});
 };
 
@@ -22,12 +22,19 @@ export const login = async (args: object) => {
 };
 
 export const registration = async (args: object) => {
-    const url = `api/players`;
+    const url = `players`;
     return await api.post(url, args);
 };
 
 
 export const getGames = async (args: object) => {
-    const url = `api/games`;
+    const url = `games`;
     return await api.get(url, args);
 };
+
+// const {token} = useTypedSelector(state => state.userLogin)
+// export async function getUser () {
+//     if (token) {
+//         return jwtDecode(token)
+//     }
+// }
