@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UsersState} from "../../types/index";
-import {getPlayers, getPlayer} from '../../api/index'
+import {getPlayers, getPlayer, getSearchUsers} from '../../api/index'
 
 const initialState : UsersState = {
     users: [],
@@ -18,18 +18,19 @@ export const fetchUsers = createAsyncThunk(
     }
 )
 
-export const fetchUser = createAsyncThunk(
-    'users/fetchUser',
-    async (data: object) => {
-        return await getPlayer(data);
-    }
-)
 
 export const fetchUsersOffset = createAsyncThunk(
     'users/fetchUsersOffset',
     async (data: object) => {
         console.log('data', data)
         return await getPlayers(data);
+    }
+)
+
+export const fetchUsersSearch = createAsyncThunk(
+    'users/fetchUsersSearch',
+    async (args: object) => {
+        return await getSearchUsers(args);
     }
 )
 
@@ -54,29 +55,30 @@ const usersSlice = createSlice({
                 state.loading = false
             })
 
-            .addCase(fetchUser.pending, state => {
-                state.loading = true
-            })
-            .addCase(fetchUser.fulfilled, (state, action) => {
-                console.log('user', action.payload)
-                state.loading = false
-                state.users = action.payload?.data
-                state.status = true
-            })
-            .addCase(fetchUser.rejected, state => {
-                state.loading = false
-            })
-
             .addCase(fetchUsersOffset.pending, state => {
                 state.loading = true
             })
             .addCase(fetchUsersOffset.fulfilled, (state, action) => {
                 console.log('users', action.payload)
                 state.loading = false
-                state.users = action.payload?.data
+                state.users = state.users.concat(action.payload.data)
                 state.status = true
             })
             .addCase(fetchUsersOffset.rejected, state => {
+                state.loading = false
+            })
+
+
+            .addCase(fetchUsersSearch.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchUsersSearch.fulfilled, (state, action) => {
+                console.log('usersSearch', action.payload)
+                state.loading = false
+                state.users = action.payload.data
+                state.status = true
+            })
+            .addCase(fetchUsersSearch.rejected, state => {
                 state.loading = false
             })
 

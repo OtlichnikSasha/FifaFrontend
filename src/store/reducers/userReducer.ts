@@ -8,11 +8,20 @@ const initialState : UserState = {
     error: null,
     loading: false
 };
-
+interface CabinetHeaders{
+    token: string
+}
 export const fetchUserCabinet = createAsyncThunk(
     'user/fetchUserCabinet',
-    async () => {
-        return await getPlayerForCabinet();
+    async (headers: CabinetHeaders) => {
+        return await getPlayerForCabinet(headers);
+    }
+)
+
+export const fetchUser = createAsyncThunk(
+    'user/fetchUser',
+    async (args: object) => {
+        return await getPlayer(args);
     }
 )
 
@@ -23,12 +32,7 @@ export const fetchRegistration = createAsyncThunk(
     }
 )
 
-export const fetchLogin = createAsyncThunk(
-    'user/fetchLogin',
-    async (data: object) => {
-        return await login(data);
-    }
-)
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -44,24 +48,11 @@ const userSlice = createSlice({
             .addCase(fetchUserCabinet.fulfilled, (state, action) => {
                 console.log('user', action.payload)
                 state.loading = false
+                // @ts-ignore
                 state.user = action.payload?.data
                 state.status = true
             })
             .addCase(fetchUserCabinet.rejected, state => {
-                state.loading = false
-            })
-            // Login
-            .addCase(fetchLogin.pending, state => {
-                state.loading = true
-            })
-            .addCase(fetchLogin.fulfilled, (state, action) => {
-                console.log('user', action.payload)
-                state.loading = false
-                state.user = action.payload?.data
-                state.status = true
-                state.error = action.payload?.error
-            })
-            .addCase(fetchLogin.rejected, state => {
                 state.loading = false
             })
             // Registration
@@ -71,17 +62,30 @@ const userSlice = createSlice({
             .addCase(fetchRegistration.fulfilled, (state, action) => {
                 console.log('user', action.payload)
                 state.loading = false
+                // @ts-ignore
                 state.user = action.payload?.data
-                state.status = true
+                state.status = action.payload?.status
                 state.error = action.payload?.error
             })
             .addCase(fetchRegistration.rejected, state => {
                 state.loading = false
             })
 
-
-
-
+            // GetUser
+            .addCase(fetchUser.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchUser.fulfilled, (state, action) => {
+                console.log('user', action.payload)
+                state.loading = false
+                // @ts-ignore
+                state.user = action.payload?.data
+                state.status = true
+                state.error = action.payload?.error
+            })
+            .addCase(fetchUser.rejected, state => {
+                state.loading = false
+            })
 
             .addDefaultCase(() => {
             })

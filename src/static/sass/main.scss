@@ -342,6 +342,67 @@
   padding-bottom: 0;
 }
 
+/* Страница пользователя */
+.user_new_game_place{
+  display: flex;
+  width: 50%;
+  align-items: center;
+  justify-content: space-between;
+  margin-top:25px;
+}
+.user_new_game__item{
+  width: 30%;
+  font-weight: bold;
+  position: relative;
+  span{
+    display: block;
+  }
+  .users_search_items{
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    background: #FFFFFF;
+    padding: 10px 0;
+  }
+  .user_search_item{
+    padding: 8px 5px;
+    display: block;
+    cursor: pointer;
+    transition: background .3s;
+  }
+  .user_search_item:hover{
+    background: #1b75e8;
+    transition: background .3s;
+  }
+  .user_search_item._active{
+    background: #1b75e8;
+  }
+}
+.user_new_game__item:nth-child(2n){
+  text-align: center;
+}
+.score_input_place{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.score_input{
+  width: 45%;
+  padding: 8px 0;
+  border-radius: 10px;
+  border:1px solid #c1c0c0;
+}
+.user_data_place{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px 0;
+  .heading{
+    text-align: left;
+  }
+}
+
 
 
 

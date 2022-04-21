@@ -75,6 +75,7 @@ body.hidden{
   font-weight: bold;
   margin-right: 15px;
   color: #FFFFFF;
+  cursor: pointer;
 }
 .nav_link:last-child{
   margin-right: 0
@@ -282,4 +283,9 @@ input, textarea, select, button {
 input:focus, textarea:focus, select:focus, button:focus {
   outline: none;
   border: 0;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

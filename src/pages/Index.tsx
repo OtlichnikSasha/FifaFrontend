@@ -1,8 +1,11 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useContext, useEffect} from 'react';
 import {UsersList} from "../components/usersList";
 import {useActions} from "../hooks/useActions";
+import {AuthContext} from "../context/AuthContext";
 
 export const Index: FC = () => {
+    const {token} = useContext(AuthContext)
+
     useEffect(() => {
         document.title = "ТОП игроки"
         fetchUsers({})

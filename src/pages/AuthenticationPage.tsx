@@ -1,16 +1,17 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState, useContext, useCallback} from 'react';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Notification} from "../components/block/notification";
-import {Link} from "react-router-dom";
+import {Link, useHref} from "react-router-dom";
+import {AuthContext} from "../context/AuthContext";
 
 export const AuthenticationPage: FC = () => {
     useEffect(() => {
         document.title = "Авторизация"
     }, [])
-    const {fetchLogin} = useActions()
-    const {user, status, loading, error} = useTypedSelector(state => state.user)
-
+    const auth = useContext(AuthContext)
+    const {authLogin} = useActions()
+    const {username, loading, token, loginError} = useTypedSelector(state => state.userLogin)
     const [authData, setAuthData] = useState({
         username: '',
         password: '',
@@ -38,7 +39,7 @@ export const AuthenticationPage: FC = () => {
             setNotificationStatus("error")
             return clearTimeout()
         }
-        return fetchLogin(authData)
+        return authLogin(authData)
     }
 
     const clearTimeout = () => {
@@ -48,6 +49,23 @@ export const AuthenticationPage: FC = () => {
             setNotificationStatus("")
         }, 3000)
     }
+
+    const checkerError = useCallback(() => {
+        if(!loading && username && token){
+            auth.login(token, username)
+            return useHref("/topResults")
+        }
+        if(loginError){
+            setFrontendError(loginError)
+            setOpenNotification(true)
+            setNotificationStatus("error")
+            clearTimeout()
+        }
+    }, [loading])
+
+    useEffect(() => {
+        checkerError()
+    }, [checkerError])
 
     return (
         <div className="modal_window_place">
@@ -74,6 +92,7 @@ export const AuthenticationPage: FC = () => {
                     name="password"
                     onChange={changeHandler}
                     value={authData.password}
+                    type="password"
                 />
                 <div className="default_btn" onClick={login}>
                     Войти

@@ -1,12 +1,13 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useContext, useRef} from 'react';
 import {Link, NavLink} from "react-router-dom";
-import {useTypedSelector} from "../../hooks/useTypedSelector";
 import logo from "../../static/img/logo.jpg"
+import {setUser} from "../../store/reducers/loginUserReducer";
+import {AuthContext} from "../../context/AuthContext";
 
 export const Header: FC = () => {
-    const {user, status, loading, error} = useTypedSelector(state => state.user)
     const nav = useRef(null)
     const mobile_menu = useRef(null)
+    const auth = useContext(AuthContext)
     const openMobileMenu = () => {
         // @ts-ignore
         mobile_menu.current.classList.toggle("_active")
@@ -21,6 +22,15 @@ export const Header: FC = () => {
         nav.current.classList.toggle("open")
         document.body.classList.toggle("hidden")
     }
+
+    const exit = async () => {
+        auth.logout()
+        setUser({
+            username: null,
+            isAuthenticated: false,
+            loginError: ''
+        })
+    };
     return (
         <header className="header">
             <div className="container">
@@ -45,10 +55,15 @@ export const Header: FC = () => {
                     <div className="diagonal-line"/>
                     <div className="right_nav">
                         {
-                            user ?
-                                <NavLink to="/cabinet" className="nav_link" onClick={closeMenu}>
-                                    Кабинет
-                                </NavLink>
+                            auth.isAuthenticated ?
+                                <>
+                                    <NavLink to="/cabinet" className="nav_link" onClick={closeMenu}>
+                                        Кабинет
+                                    </NavLink>
+                                    <div className="nav_link" onClick={exit}>
+                                        Выйти
+                                    </div>
+                                </>
                                 :
                                 <>
                                     <NavLink to="user/sign_in" className="nav_link" onClick={closeMenu}>

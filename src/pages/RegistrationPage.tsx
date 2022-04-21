@@ -49,6 +49,7 @@ export const RegistrationPage: FC = () => {
     }
 
     useEffect(() => {
+
         if(user && !loading && status){
             setFrontendError("Вы успешно зарегистрированы")
             setNotificationStatus("success")

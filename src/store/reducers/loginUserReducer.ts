@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { login } from '../../api/index'
+import {login, logout} from '../../api/index'
+import {LoginState} from "../../types";
 
-const initialState = {
+const initialState: LoginState = {
     loading: false,
-    loginError: false,
+    loginError: '',
     username: null,
     isAuthenticated: false,
     token: ''
@@ -16,37 +17,58 @@ export const authLogin = createAsyncThunk(
     }
 )
 
+export const authLogout = createAsyncThunk(
+    'userLogin/authLogout',
+    async () => {
+        return await logout()
+    }
+)
+
 const userLoginSlice = createSlice({
     name: 'userLogin',
     initialState,
     reducers: {
-        setName: (state, action) => {
-            state.username = action.payload
+        setUser: (state, action) => {
+            console.log('action payload', state, action)
+            state.username = action.payload.username
+            state.isAuthenticated = action.payload.isAuthenticated
         },
-        setErrors: (state) => {
-            state.loginError = false
-        },
-        setAuthenticated: (state) => {
-            state.isAuthenticated = false
+        setAuthenticated: (state, action) => {
+            console.log('setAuthenticated', state, action)
+            state.isAuthenticated = action.payload
         }
     },
     extraReducers: (builder) => {
         builder
+            // Login
             .addCase(authLogin.pending, state => {
                 state.loading = true
             })
-            .addCase(authLogin.fulfilled, (state, action) => {
-                console.log('action.payload', action.payload)
-                // if (action.payload.success) {
-                //     state.username = action.payload.data.username
-                // } else if (action.payload.error) {
-                //     state.loginError = true
-                // }
-                // state.loading = false
+            .addCase(authLogin.fulfilled, (state: LoginState, action) => {
+                console.log('action.payload authLogin', action.payload)
+                // @ts-ignore
+                state.username = action.payload.data?.username
+                // @ts-ignore
+                state.token = action.payload?.data?.token
+                // @ts-ignore
+                state.loginError = action.payload?.data?.error
+                state.loading = false
             })
             .addCase(authLogin.rejected, (state) => {
                 state.loading = false
             })
+            // Logout
+            .addCase(authLogout.pending, state => {
+                state.loading = true
+            })
+            .addCase(authLogout.fulfilled, (state, action) => {
+                console.log('action.payload authLogout', action.payload)
+            })
+            .addCase(authLogout.rejected, (state) => {
+                state.loading = false
+            })
+
+
             .addDefaultCase(() => {
             })
     }
@@ -57,7 +79,5 @@ const { actions, reducer } = userLoginSlice
 export default reducer
 
 export const {
-    setName,
-    setErrors,
-    setAuthenticated
+    setUser,setAuthenticated
 } = actions

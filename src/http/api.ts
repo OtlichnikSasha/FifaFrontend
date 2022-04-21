@@ -1,18 +1,14 @@
 import { http } from './index';
 
 export class api {
-    static async get (url: string, args: object) {
+    static async get (url: string, args: object, headers: object = {}) {
         let result = {
             status: false,
             data: [],
             error: '',
         };
         try {
-                const res = await http.get(url, { params: { ...args }, headers:{
-                        "Access-Control-Allow-Origin": "*",
-                        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-                        "Access-Control-Allow-Credentials": true
-                    }})
+            const res = await http.get(url, { params: { ...args}, headers : {...headers} })
             console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
@@ -20,7 +16,7 @@ export class api {
             }
         } catch (e: any) {
             console.log('error', e.response.data.error)
-            result.error = e.response.data.error
+            result.error = e.response.data.message
         }
         return result;
     }
@@ -32,18 +28,18 @@ export class api {
             error: ''
         };
         try {
-            const res = await http.post(url, data, { headers:{
-                'Access-Control-Allow-Origin': "*"
-            }})
+            const res = await http.post(url, data )
             console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
-                result.data = res.data.result;
+                result.data = res.data;
             }
         } catch (e: any) {
-            console.log('e.response', e.response)
-            console.log('error', e.response.data.error)
-            result.error = e.response.data.error
+            if(e.response.data.hasOwnProperty("message")){
+                result.error = e.response.data.message
+                return result
+            }
+            result.error = e.response.data
             return result
         }
         return result
@@ -59,12 +55,12 @@ export class api {
             const res = await http.put(url, data, { params: { ...args } });
             if (res.status === 200) {
                 result.status = true;
-                result.data = res.data.result;
+                result.data = res.data;
             }
         } catch (e: any) {
             console.log('e.response', e.response)
             console.log('error', e.response.data.error)
-            result.error = e.response.data.error
+            result.error = e.response.data.message
             return result
         }
         return result;
