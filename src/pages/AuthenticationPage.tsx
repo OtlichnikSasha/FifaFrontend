@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState, useContext, useCallback} from 'react';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Notification} from "../components/block/notification";
-import {Link, useHref} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 
 export const AuthenticationPage: FC = () => {
@@ -11,6 +11,7 @@ export const AuthenticationPage: FC = () => {
     }, [])
     const auth = useContext(AuthContext)
     const {authLogin} = useActions()
+    const navigate = useNavigate();
     const {username, loading, token, loginError} = useTypedSelector(state => state.userLogin)
     const [authData, setAuthData] = useState({
         username: '',
@@ -53,7 +54,7 @@ export const AuthenticationPage: FC = () => {
     const checkerError = useCallback(() => {
         if(!loading && username && token){
             auth.login(token, username)
-            return useHref("/topResults")
+            return navigate("/topResults")
         }
         if(loginError){
             setFrontendError(loginError)

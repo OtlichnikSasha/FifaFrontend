@@ -27,7 +27,9 @@ export const Cabinet: FC = () => {
                 ...searchData,
                 username: event.target.value,
             })
-            fetchUsersSearch(searchData)
+            setTimeout(() => {
+                fetchUsersSearch(searchData)
+            }, [1000])
         }
     }
 
