@@ -5,10 +5,13 @@ import {fetchUserCabinet} from "../store/reducers/userReducer";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/block/loader";
+import {UserEntity} from "../types";
 
 export const Cabinet: FC = () => {
     const {fetchUserCabinet, fetchUsersSearch} = useActions()
     const {user, loading} = useTypedSelector(state => state.user)
+    const {users} = useTypedSelector(state => state.users)
+    const searchLoading = useTypedSelector(state => state.users.loading)
     const {token} = useContext(AuthContext)
     useEffect(() => {
         document.title = "Личный кабинет"
@@ -34,12 +37,16 @@ export const Cabinet: FC = () => {
     if (loading) return <Loader/>
 
     const openNewGamePlace = () => {
-        if(open){
+        if (open) {
             setOpen(false)
             return setBtnText('Заполнить данные о сыгранной игре')
         }
         setOpen(true)
         return setBtnText('Закрыть')
+    }
+
+    const changeRival = (user: UserEntity) => {
+        setRival(user.username)
     }
     return (
         <div className="container">
@@ -61,11 +68,18 @@ export const Cabinet: FC = () => {
                             <span>{rival}</span>
                             <input className="default_input" onChange={changeHandler} value={searchData.username}/>
                             <div className="users_search_items">
-                                <div className="user_search_item">Abobus</div>
-                                <div className="user_search_item">Abobus</div>
-                                <div className="user_search_item">Abobus</div>
-                                <div className="user_search_item">Abobus</div>
-                                <div className="user_search_item">Abobus</div>
+                                {
+                                    !searchLoading && users.length ? users.map(user => {
+                                            return (
+                                                <div className="user_search_item" key={user.id} onClick={() => changeRival(user)}>
+                                                    {user.username}
+                                                </div>
+                                            )
+                                        })
+                                        :
+                                        <></>
+
+                                }
                             </div>
                         </div>
                     </div>
