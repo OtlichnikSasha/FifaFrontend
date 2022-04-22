@@ -27,8 +27,10 @@ export const Cabinet: FC = () => {
                 ...searchData,
                 username: event.target.value,
             })
+
             setTimeout(() => {
                 fetchUsersSearch(searchData)
+                // @ts-ignore
             }, [1000])
         }
     }
