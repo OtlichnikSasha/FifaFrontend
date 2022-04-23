@@ -78,6 +78,7 @@ export const Cabinet: FC = () => {
 
         }
     }
+
     return (
         <div className="container">
             {
@@ -103,15 +104,17 @@ export const Cabinet: FC = () => {
                 <>
                     <div className="user_new_game_place">
                         <div className="user_new_game__item">
-                            {user?.username}
-                            {user?.nameSurname && (user?.nameSurname)} ({user?.rating})
+                            {user && user?.username}
+                            {user &&  user?.nameSurname && (user?.nameSurname)}
+                            {user && (user?.rating) }
                         </div>
                         <div className="user_new_game__item">
                             vs
                         </div>
                         <div className="user_new_game__item">
                             <span>
-                                {rival?.username} {rival?.nameSurname && (rival?.nameSurname)} ({rival?.rating})
+                                {rival && rival?.username} {rival && rival?.nameSurname ? (rival?.nameSurname) : ''}
+                                {rival && (rival?.rating)}
                             </span>
                             <input className="default_input" onChange={changeHandler} value={searchData.username}/>
                             <div className="users_search_items">
