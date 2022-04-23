@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UsersState} from "../../types/index";
-import {getPlayers, getPlayer, getSearchUsers} from '../../api/index'
+import {getPlayers} from '../../api/index'
 
 const initialState : UsersState = {
     users: [],
@@ -27,12 +27,6 @@ export const fetchUsersOffset = createAsyncThunk(
     }
 )
 
-export const fetchUsersSearch = createAsyncThunk(
-    'users/fetchUsersSearch',
-    async (args: object) => {
-        return await getSearchUsers(args);
-    }
-)
 
 const usersSlice = createSlice({
     name: 'users',
@@ -45,10 +39,11 @@ const usersSlice = createSlice({
             .addCase(fetchUsers.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchUsers.fulfilled, (state, action) => {
+            .addCase(fetchUsers.fulfilled, (state:UsersState, action) => {
                 console.log('users', action.payload)
                 state.loading = false
-                state.users = action.payload?.data
+                // @ts-ignore
+                state.users = action.payload.data.content
                 state.status = true
             })
             .addCase(fetchUsers.rejected, state => {
@@ -68,19 +63,6 @@ const usersSlice = createSlice({
                 state.loading = false
             })
 
-
-            .addCase(fetchUsersSearch.pending, state => {
-                state.loading = true
-            })
-            .addCase(fetchUsersSearch.fulfilled, (state, action) => {
-                console.log('usersSearch', action.payload)
-                state.loading = false
-                state.users = action.payload.data
-                state.status = true
-            })
-            .addCase(fetchUsersSearch.rejected, state => {
-                state.loading = false
-            })
 
             .addDefaultCase(() => {
             })

@@ -1,6 +1,8 @@
 import { api } from '../http/api';
 import {UsersData} from "../store/reducers/usersReducer";
-
+interface CabinetHeaders{
+    token: string
+}
 export const getPlayerForCabinet = async (headers: object) => {
     // @ts-ignore
     headers.Authorization = headers.token
@@ -13,15 +15,30 @@ export const getPlayers = async (args: object) => {
     return await api.get(url, args);
 };
 
-export const getSearchUsers = async (args: object) => {
+export const getSearchUsers = async (args: CabinetHeaders) => {
+    const headers = {
+        "Authorization": args.token
+    };
     const url = `players/search`;
-    return await api.get(url, args);
+    return await api.get(url, args, headers);
 };
 
 
 export const getPlayer = async (args: UsersData) => {
     const url = `players/${args.id}`;
     return await api.get(url, {});
+};
+
+export const editPlayer = async (data: object) => {
+    const headers = {
+        // @ts-ignore
+        "Authorization": data.token,
+        "Access-Control-Allow-Origin" : "*"
+    };
+    // @ts-ignore
+    delete data['token']
+    const url = `players`;
+    return await api.put(url, data, headers);
 };
 
 export const login = async (args: object) => {

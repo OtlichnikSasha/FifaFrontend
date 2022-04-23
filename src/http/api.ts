@@ -45,20 +45,19 @@ export class api {
         return result
     }
 
-    static async put (url: string, data = {}, args: object) {
+    static async put (url: string, data: object, headers: object = {}) {
         let result = {
             status: false,
             data: [],
             error: ''
         };
         try {
-            const res = await http.put(url, data, { params: { ...args } });
+            const res = await http.put(url, data, { headers : {...headers} });
             if (res.status === 200) {
                 result.status = true;
                 result.data = res.data;
             }
         } catch (e: any) {
-            console.log('e.response', e.response)
             console.log('error', e.response.data.error)
             result.error = e.response.data.message
             return result

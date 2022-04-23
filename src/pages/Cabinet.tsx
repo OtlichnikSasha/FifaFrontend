@@ -1,25 +1,32 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
-import {fetchUserCabinet} from "../store/reducers/userReducer";
+import {fetchEditUser, fetchUserCabinet} from "../store/reducers/userReducer";
 import {Link} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/block/loader";
 import {UserEntity} from "../types";
 
 export const Cabinet: FC = () => {
-    const {fetchUserCabinet, fetchUsersSearch} = useActions()
+    const {fetchUserCabinet, fetchUsersSearch, fetchEditUser} = useActions()
     const {user, loading} = useTypedSelector(state => state.user)
-    const {users} = useTypedSelector(state => state.users)
-    const searchLoading = useTypedSelector(state => state.users.loading)
-    const {token} = useContext(AuthContext)
+    const {users} = useTypedSelector(state => state.usersSearch)
+    const searchLoading = useTypedSelector(state => state.usersSearch.loading)
+    const {token, player_id} = useContext(AuthContext)
     useEffect(() => {
         document.title = "Личный кабинет"
         fetchUserCabinet({token})
     }, [])
-    const [rival, setRival] = useState("Найдите соперника")
+    // @ts-ignore
+    const [rival, setRival] = useState<UserEntity>({})
     const [searchData, setSearchData] = useState({
-        username: ''
+        username: '',
+        token: token
+    })
+    const [userData, setUserData] = useState({
+        id: player_id,
+        nameSurname: '',
+        token: token
     })
     const changeHandler = (event: any) => {
         if (event.target.value) {
@@ -35,11 +42,11 @@ export const Cabinet: FC = () => {
         }
     }
 
+
+
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
-
     if (loading) return <Loader/>
-
     const openNewGamePlace = () => {
         if (open) {
             setOpen(false)
@@ -50,10 +57,43 @@ export const Cabinet: FC = () => {
     }
 
     const changeRival = (user: UserEntity) => {
-        setRival(user.username)
+        setRival(user)
+    }
+
+    const addNameSurname = (event: any) => {
+        setUserData({
+            ...userData,
+            nameSurname: event.target.value
+        })
+    }
+
+    const editUser = () => {
+        if(userData.nameSurname){
+            fetchEditUser(userData)
+        }
+    }
+
+    const addMatch = () => {
+        if(rival){
+
+        }
     }
     return (
         <div className="container">
+            {
+                !user?.nameSurname &&
+                <>
+                    <div className="label">
+                        Вы не заполнили личную информацию о себе. С ней другим игрокам будет проще вас находить.
+                    </div>
+                    <div className="label">Введите имя и фамилию</div>
+                    <input className="default_input" placeholder="Введите имя и фамилию" onChange={addNameSurname}/>
+                    {
+                        userData.nameSurname &&
+                            <div className="default_btn" onClick={editUser}>Сохранить</div>
+                    }
+                </>
+            }
             <div className="default_btn" onClick={openNewGamePlace}>
                 {btnText}
             </div>
@@ -63,26 +103,29 @@ export const Cabinet: FC = () => {
                 <>
                     <div className="user_new_game_place">
                         <div className="user_new_game__item">
-                            Real Madrid {user?.username}
+                            {user?.username}
+                            {user?.nameSurname && (user?.nameSurname)} ({user?.rating})
                         </div>
                         <div className="user_new_game__item">
                             vs
                         </div>
                         <div className="user_new_game__item">
-                            <span>{rival}</span>
+                            <span>
+                                {rival?.username} {rival?.nameSurname && (rival?.nameSurname)} ({rival?.rating})
+                            </span>
                             <input className="default_input" onChange={changeHandler} value={searchData.username}/>
                             <div className="users_search_items">
                                 {
                                     !searchLoading && users.length ? users.map(user => {
                                             return (
-                                                <div className="user_search_item" key={user.id} onClick={() => changeRival(user)}>
+                                                <div className="user_search_item" key={user.id}
+                                                     onClick={() => changeRival(user)}>
                                                     {user.username}
                                                 </div>
                                             )
                                         })
                                         :
                                         <></>
-
                                 }
                             </div>
                         </div>
@@ -98,12 +141,18 @@ export const Cabinet: FC = () => {
                         </div>
                         <div className="user_new_game__item"/>
                     </div>
+                    {
+                        rival &&
+                        <div className="default_btn" onClick={addMatch}>
+                            Сохранить
+                        </div>
+                    }
                 </>
             }
             {/*UserData*/}
             <div className="user_data_place">
                 <div className="heading">
-                    {user?.username} ({user?.rating})
+                    {user?.username} {user?.nameSurname && (user?.nameSurname)} ({user?.rating})
                 </div>
             </div>
             {user && user?.games.length ? user?.games.map(game => {

@@ -25,7 +25,7 @@ export const User: FC = () => {
         <div className="container">
             <div className="user_data_place">
                 <div className="heading">
-                    {user?.username} ({user?.rating})
+                    {user?.username} {user?.nameSurname && (user?.nameSurname)} ({user?.rating})
                 </div>
             </div>
             {user && user?.games.length ? user?.games.map(game => {

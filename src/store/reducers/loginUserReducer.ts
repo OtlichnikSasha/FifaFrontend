@@ -7,7 +7,8 @@ const initialState: LoginState = {
     loginError: '',
     username: null,
     isAuthenticated: false,
-    token: ''
+    token: '',
+    player_id: 0
 }
 
 export const authLogin = createAsyncThunk(
@@ -49,9 +50,10 @@ const userLoginSlice = createSlice({
                 // @ts-ignore
                 state.username = action.payload.data?.username
                 // @ts-ignore
-                state.token = action.payload?.data?.token
+                state.token = action.payload.data?.token
                 // @ts-ignore
-                state.loginError = action.payload?.data?.error
+                state.player_id = action.payload.data?.player_id
+                state.loginError = action.payload.error
                 state.loading = false
             })
             .addCase(authLogin.rejected, (state) => {

@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UserState} from "../../types/index";
-import {getPlayer, login, registration, getPlayerForCabinet} from '../../api/index'
+import {getPlayer, login, registration, getPlayerForCabinet, editPlayer} from '../../api/index'
 
 const initialState : UserState = {
     user: null,
@@ -22,6 +22,13 @@ export const fetchUser = createAsyncThunk(
     'user/fetchUser',
     async (args: object) => {
         return await getPlayer(args);
+    }
+)
+
+export const fetchEditUser = createAsyncThunk(
+    'user/fetchEditUser',
+    async (data: object) => {
+        return await editPlayer(data);
     }
 )
 

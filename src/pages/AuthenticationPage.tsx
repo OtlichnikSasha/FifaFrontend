@@ -12,7 +12,7 @@ export const AuthenticationPage: FC = () => {
     const auth = useContext(AuthContext)
     const {authLogin} = useActions()
     const navigate = useNavigate();
-    const {username, loading, token, loginError} = useTypedSelector(state => state.userLogin)
+    const {username, loading, token, loginError, player_id} = useTypedSelector(state => state.userLogin)
     const [authData, setAuthData] = useState({
         username: '',
         password: '',
@@ -20,6 +20,7 @@ export const AuthenticationPage: FC = () => {
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
     const [notificationStatus, setNotificationStatus] = useState('')
+    const [checker, setChecker] = useState(false)
     const changeHandler = (event: any) => {
         setAuthData({
             ...authData,
@@ -40,7 +41,8 @@ export const AuthenticationPage: FC = () => {
             setNotificationStatus("error")
             return clearTimeout()
         }
-        return authLogin(authData)
+        authLogin(authData)
+        return setChecker(true)
     }
 
     const clearTimeout = () => {
@@ -52,17 +54,18 @@ export const AuthenticationPage: FC = () => {
     }
 
     const checkerError = useCallback(() => {
+        console.log(loading, username, token, loginError)
         if(!loading && username && token){
-            auth.login(token, username)
-            return navigate("/topResults")
+            auth.login(token, username, player_id)
+            return navigate("/topPlayers")
         }
-        if(loginError){
+        if(loginError && !loading){
             setFrontendError(loginError)
             setOpenNotification(true)
             setNotificationStatus("error")
-            clearTimeout()
+            return clearTimeout()
         }
-    }, [loading])
+    }, [checker, loading])
 
     useEffect(() => {
         checkerError()

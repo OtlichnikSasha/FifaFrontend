@@ -2,7 +2,8 @@ export interface UserEntity{
     id: number,
     username: string,
     rating: number,
-    games: GameEntity[]
+    games: GameEntity[],
+    nameSurname: string | null
 }
 
 export interface GameEntity{
@@ -22,7 +23,8 @@ export interface UserState{
     user: UserEntity| null,
     loading: boolean,
     error: string | null,
-    status: boolean | null
+    status: boolean | null,
+
 }
 
 export interface GamesState{
@@ -37,5 +39,6 @@ export interface LoginState{
     loginError: string | undefined,
     username: string | null,
     isAuthenticated: boolean,
-    token: string | null
+    token: string | null,
+    player_id: number
 }
