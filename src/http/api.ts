@@ -65,4 +65,24 @@ export class api {
         return result;
     }
 
+    static async delete (url: string, args: object, headers: object = {}) {
+        let result = {
+            status: false,
+            data: [],
+            error: '',
+        };
+        try {
+            const res = await http.delete(url, { params: { ...args}, headers : {...headers} })
+            console.log('res', res)
+            if (res.status === 200) {
+                result.status = true;
+                result.data = res.data;
+            }
+        } catch (e: any) {
+            console.log('error', e.response.data.error)
+            result.error = e.response.data.message
+        }
+        return result;
+    }
+
 }

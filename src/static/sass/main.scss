@@ -105,6 +105,27 @@
   padding: 10px 20px;
 }
 
+/* Loader pulse */
+.preloader_text {
+  background: $blue;
+  width: 10px;
+  height: 10px;
+  animation: radial-pulse 0.8s infinite;
+  margin-left: 30px;
+  margin-top: 15px;
+  z-index: 500;
+}
+
+@keyframes radial-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(28, 154, 250, 0);
+    border-radius: 50%;
+  }
+  100% {
+    box-shadow: 0 0 0 10px $blue;
+    border-radius: 50%;
+  }
+}
 /* Loader */
 .lds-roller {
   display: inline-block;
@@ -315,7 +336,7 @@
   align-items: center;
   border-bottom: 2px solid #e6e4e4;
   padding: 10px 0;
-  width: 50%;
+  width: 100%;
 }
 .games_card:first-child{
   border-top: 2px solid #e6e4e4;
@@ -340,6 +361,12 @@
 }
 .games_card__data:last-child{
   padding-bottom: 0;
+}
+.games_card__accept_data{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
 }
 
 /* Страница пользователя */

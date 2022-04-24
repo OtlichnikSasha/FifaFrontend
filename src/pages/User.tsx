@@ -9,15 +9,16 @@ interface UserParams {
 }
 
 export const User: FC = () => {
-    console.log(useParams())
+    let page = 0;
+    const size = 20;
     // @ts-ignore
     const {id}: UserParams = useParams()
     useEffect(() => {
         document.title = "Пользователь"
         fetchUser({id})
         // @ts-ignore
-        fetchGamesForUser({id})
-    }, [])
+        fetchGamesForUser({id, page, size})
+    }, [id])
     const {fetchUser, fetchGamesForUser} = useActions()
     const {user, loading} = useTypedSelector(state => state.user)
     const {games} = useTypedSelector(state => state.games)

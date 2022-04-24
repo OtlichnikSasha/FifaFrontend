@@ -1,5 +1,5 @@
 import React, {FC, useContext, useRef} from 'react';
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import logo from "../../static/img/logo.jpg"
 import {AuthContext} from "../../context/AuthContext";
 
@@ -7,6 +7,7 @@ export const Header: FC = () => {
     const nav = useRef(null)
     const mobile_menu = useRef(null)
     const auth = useContext(AuthContext)
+    const navigate = useNavigate()
     const openMobileMenu = () => {
         // @ts-ignore
         mobile_menu.current.classList.toggle("_active")
@@ -24,6 +25,7 @@ export const Header: FC = () => {
 
     const exit = async () => {
         auth.logout()
+        navigate('/topPlayers')
     };
     return (
         <header className="header">

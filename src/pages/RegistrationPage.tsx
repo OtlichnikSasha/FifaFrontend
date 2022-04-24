@@ -18,6 +18,7 @@ export const RegistrationPage: FC = () => {
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
     const [notificationStatus, setNotificationStatus] = useState('')
+    const [checker, setChecker] = useState(false)
     const changeHandler = (event: any) => {
         setRegistrationData({
             ...registrationData,
@@ -44,23 +45,26 @@ export const RegistrationPage: FC = () => {
             setOpenNotification(true)
             return clearTimeout()
         }
+        setChecker(true)
         return fetchRegistration(registrationData)
     }
 
     useEffect(() => {
-        if(user && !loading && status){
-            setFrontendError("Вы успешно зарегистрированы")
-            setNotificationStatus("success")
-            setOpenNotification(true)
-            clearTimeout()
+        if(checker && !loading){
+            if(status){
+                setFrontendError("Вы успешно зарегистрированы")
+                setNotificationStatus("success")
+                setOpenNotification(true)
+                clearTimeout()
+            }
+            if(!status && error){
+                setFrontendError(error)
+                setNotificationStatus("error")
+                setOpenNotification(true)
+                clearTimeout()
+            }
         }
-        if(!status && error){
-            setFrontendError(error)
-            setNotificationStatus("error")
-            setOpenNotification(true)
-            clearTimeout()
-        }
-    }, [user, status])
+    }, [checker, loading])
 
     const clearTimeout = () => {
         return setTimeout(() => {

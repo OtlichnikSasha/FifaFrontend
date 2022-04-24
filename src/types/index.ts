@@ -9,7 +9,8 @@ export interface UserEntity{
 export interface GameEntity{
     id: number,
     players: UserEntity[],
-    score: string
+    score: string,
+    status: boolean
 }
 
 export interface UsersState{
@@ -38,7 +39,7 @@ export interface GameState{
     game: GameEntity | null,
     loading: boolean,
     error: string | null,
-    status: boolean | null
+    status: null | boolean
 }
 
 export interface LoginState{

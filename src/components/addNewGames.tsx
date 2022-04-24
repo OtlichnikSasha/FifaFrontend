@@ -99,8 +99,7 @@ export const AddNewGames = () => {
                 </div>
                 <div className="user_new_game__item">
                             <span>
-                                {rival?.username} {rival?.nameSurname ? (rival?.nameSurname) : ''}
-                                {(rival?.rating)}
+                                {rival?.username} {rival?.nameSurname ? (rival?.nameSurname) : ''} {rival ? (rival?.rating) : ''}
                             </span>
                     <input className="default_input" onChange={changeHandler} />
                     <div className="users_search_items">

@@ -9,12 +9,14 @@ const initialState : GamesState = {
     loading: false
 };
 interface CabinetGames{
-    id: number
+    id: number,
+    page: number,
+    size: number
 }
 export const fetchGames = createAsyncThunk(
     'games/fetchGames',
-    async (data: object) => {
-        return await getGames(data);
+    async (args: object) => {
+        return await getGames(args);
     }
 )
 

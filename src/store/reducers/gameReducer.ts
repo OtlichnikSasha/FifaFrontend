@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {GameState} from "../../types/index";
-import {createGame} from '../../api/index'
+import {createGame, acceptGame, removeGame} from '../../api/index'
 
 const initialState: GameState = {
     game: null,
@@ -13,6 +13,22 @@ export const fetchCreateGame = createAsyncThunk(
     'game/fetchGame',
     async (data: object) => {
         return await createGame(data);
+    }
+)
+
+export const fetchAcceptGame = createAsyncThunk(
+    'game/fetchAcceptGame',
+    async (data: object) => {
+        return await acceptGame(data);
+    }
+)
+interface DeleteArgs{
+    id: number
+}
+export const fetchRemoveGame = createAsyncThunk(
+    'game/fetchRemoveGame',
+    async (args: DeleteArgs) => {
+        return await removeGame(args);
     }
 )
 

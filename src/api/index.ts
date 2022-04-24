@@ -61,6 +61,7 @@ export const getGames = async (args: object) => {
     const url = `games`;
     return await api.get(url, args);
 };
+
 interface GameUser{
     id: string
 }
@@ -70,16 +71,34 @@ export const getGamesUser = async (args: GameUser) => {
 };
 
 interface CabinetGames{
-    id: number
+    id: number,
+    page: number,
+    size: number
 }
 export const getCabinetGames = async (args: CabinetGames) => {
     const url = `games/cabinet/${args.id}`;
-    return await api.get(url, {});
+    // @ts-ignore
+    delete args['id']
+    return await api.get(url, args);
 };
 
 export const createGame = async (data: object) => {
     const url = `games`;
     return await api.post(url, data);
+};
+
+export const acceptGame = async (data: object) => {
+    const url = `games`;
+    return await api.put(url, data);
+};
+
+interface DeleteArgs{
+    id: number
+}
+
+export const removeGame = async (args: DeleteArgs) => {
+    const url = `games/${args.id}`;
+    return await api.delete(url, {});
 };
 
 

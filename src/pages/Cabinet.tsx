@@ -1,13 +1,15 @@
 import React, {FC, useCallback, useContext, useEffect, useState} from 'react';
 import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
-import {Link} from "react-router-dom";
 import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/block/loader";
 import {Notification} from "../components/block/notification";
 import {AddNewGames} from "../components/addNewGames";
+import {GamesCabinetList} from "../components/gamesCabinetList";
 
 export const Cabinet: FC = () => {
+    let page = 0;
+    const size = 20;
     const {fetchUserCabinet, fetchEditUser, fetchGamesForCabinet, clearUserState} = useActions()
     const {token} = useContext(AuthContext)
     const [openNotification, setOpenNotification] = useState(false)
@@ -21,10 +23,8 @@ export const Cabinet: FC = () => {
     const [checker, setChecker] = useState(false)
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
-    const {user, loading, error, status} = useTypedSelector(state => state.user)
+    const {user, loading} = useTypedSelector(state => state.user)
 
-    const {games} = useTypedSelector(state => state.games)
-    const gamesLoading = useTypedSelector(state => state.games.loading)
     const getUser = useCallback(() => {
         document.title = "Личный кабинет"
         fetchUserCabinet({token})
@@ -36,7 +36,7 @@ export const Cabinet: FC = () => {
 
     const getUserGames = useCallback(() => {
         if (!loading && user) {
-            fetchGamesForCabinet({id: user.id})
+            fetchGamesForCabinet({id: user.id, page, size})
             setUserData({
                 ...userData,
                 id: user.id
@@ -130,35 +130,7 @@ export const Cabinet: FC = () => {
                     {user?.username} {user?.nameSurname && (user?.nameSurname)} ({user?.rating})
                 </div>
             </div>
-            {!gamesLoading && games && games.length ? games.map(game => {
-                    return (
-                        <div className="games_card" key={game.id}>
-                            <div className="games_card__teams_place">
-                                <Link to={`/user/${game.players[0].id}`}
-                                      className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.players[0].username}
-                                </Link>
-                                <Link to={`/user/${game.players[1].id}`}
-                                      className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.players[1].username}
-                                </Link>
-                            </div>
-                            <div className="games_card__score_place">
-                                <div
-                                    className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.score.split(":")[0]}
-                                </div>
-                                <div
-                                    className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.score.split(":")[1]}
-                                </div>
-                            </div>
-                        </div>
-                    )
-                })
-                :
-                <div>Вы пока не играли матчей.</div>
-            }
+            <GamesCabinetList/>
         </div>
     );
 };

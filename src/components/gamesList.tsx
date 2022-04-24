@@ -1,16 +1,13 @@
 import React, {FC} from 'react';
-import {Loader} from "./block/loader";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {Link} from "react-router-dom";
+import {Empty} from "./block/empty";
 
 export const GamesList: FC = () => {
-    const {games, status, loading, error} = useTypedSelector(state => state.games)
-    if (loading) {
-        return <Loader/>
-    }
+    const {games, loading} = useTypedSelector(state => state.games)
     return (
         <>
-            {games.length ? games.map(game => {
+            {!loading && games.length ? games.map(game => {
                     return (
                         <div className="games_card" key={game.id}>
                             <div className="games_card__teams_place">
@@ -35,8 +32,9 @@ export const GamesList: FC = () => {
                     )
                 })
                 :
-                <div>Информации об играх пока нет</div>
+                <Empty label="Информации об играх пока нет" loading={loading}/>
             }
+            {/*{loading && <div className="preloader_text"/> }*/}
         </>
     );
 };
