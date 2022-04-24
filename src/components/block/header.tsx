@@ -1,7 +1,6 @@
 import React, {FC, useContext, useRef} from 'react';
 import {Link, NavLink} from "react-router-dom";
 import logo from "../../static/img/logo.jpg"
-import {setUser} from "../../store/reducers/loginUserReducer";
 import {AuthContext} from "../../context/AuthContext";
 
 export const Header: FC = () => {
@@ -25,11 +24,6 @@ export const Header: FC = () => {
 
     const exit = async () => {
         auth.logout()
-        setUser({
-            username: null,
-            isAuthenticated: false,
-            loginError: ''
-        })
     };
     return (
         <header className="header">

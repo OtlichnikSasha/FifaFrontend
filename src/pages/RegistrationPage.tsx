@@ -8,9 +8,8 @@ export const RegistrationPage: FC = () => {
     useEffect(() => {
         document.title = "Регистрация"
     }, [])
-    const {fetchRegistration} = useActions()
+    const {fetchRegistration, clearUserState} = useActions()
     const {user, status, loading, error} = useTypedSelector(state => state.user)
-
     const [registrationData, setRegistrationData] = useState({
         username: '',
         password: '',
@@ -49,7 +48,6 @@ export const RegistrationPage: FC = () => {
     }
 
     useEffect(() => {
-
         if(user && !loading && status){
             setFrontendError("Вы успешно зарегистрированы")
             setNotificationStatus("success")
@@ -68,6 +66,7 @@ export const RegistrationPage: FC = () => {
         return setTimeout(() => {
             setFrontendError("")
             setOpenNotification(false)
+            clearUserState()
         }, 3000)
     }
 

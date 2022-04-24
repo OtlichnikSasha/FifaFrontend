@@ -29,14 +29,12 @@ const userLoginSlice = createSlice({
     name: 'userLogin',
     initialState,
     reducers: {
-        setUser: (state, action) => {
-            console.log('action payload', state, action)
-            state.username = action.payload.username
-            state.isAuthenticated = action.payload.isAuthenticated
-        },
-        setAuthenticated: (state, action) => {
-            console.log('setAuthenticated', state, action)
-            state.isAuthenticated = action.payload
+        clearLoginUserState: state => {
+            state.loading = false
+            state.loginError = ''
+            state.username = null
+            state.isAuthenticated = false
+            state.player_id = 0
         }
     },
     extraReducers: (builder) => {
@@ -76,10 +74,10 @@ const userLoginSlice = createSlice({
     }
 })
 
-const { actions, reducer } = userLoginSlice
+const { actions, reducer} = userLoginSlice
 
 export default reducer
 
 export const {
-    setUser,setAuthenticated
+    clearLoginUserState
 } = actions

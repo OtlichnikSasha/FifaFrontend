@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import {UserState} from "../../types/index";
-import {getPlayer, login, registration, getPlayerForCabinet, editPlayer} from '../../api/index'
+import {getPlayer, registration, getPlayerForCabinet, editPlayer} from '../../api/index'
 
 const initialState : UserState = {
     user: null,
@@ -25,13 +25,6 @@ export const fetchUser = createAsyncThunk(
     }
 )
 
-export const fetchEditUser = createAsyncThunk(
-    'user/fetchEditUser',
-    async (data: object) => {
-        return await editPlayer(data);
-    }
-)
-
 export const fetchRegistration = createAsyncThunk(
     'user/fetchRegistration',
     async (data: object) => {
@@ -39,24 +32,34 @@ export const fetchRegistration = createAsyncThunk(
     }
 )
 
-
+export const fetchEditUser = createAsyncThunk(
+    'user/fetchEditUser',
+    async (data: object) => {
+        return await editPlayer(data);
+    }
+)
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-
+        clearUserState: state => {
+            state.loading = false
+            state.user = null
+            state.status = null
+            state.error = null
+        }
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUserCabinet.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchUserCabinet.fulfilled, (state, action) => {
+            .addCase(fetchUserCabinet.fulfilled, (state: UserState, action) => {
                 console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
-                state.user = action.payload?.data
+                state.user = action.payload.data
                 state.status = true
             })
             .addCase(fetchUserCabinet.rejected, state => {
@@ -66,13 +69,13 @@ const userSlice = createSlice({
             .addCase(fetchRegistration.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchRegistration.fulfilled, (state, action) => {
+            .addCase(fetchRegistration.fulfilled, (state: UserState, action) => {
                 console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload?.data
-                state.status = action.payload?.status
-                state.error = action.payload?.error
+                state.status = action.payload.status
+                state.error = action.payload.error
             })
             .addCase(fetchRegistration.rejected, state => {
                 state.loading = false
@@ -82,15 +85,31 @@ const userSlice = createSlice({
             .addCase(fetchUser.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchUser.fulfilled, (state, action) => {
+            .addCase(fetchUser.fulfilled, (state: UserState, action) => {
                 console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
-                state.user = action.payload?.data
+                state.user = action.payload.data
                 state.status = true
-                state.error = action.payload?.error
+                state.error = action.payload.error
             })
             .addCase(fetchUser.rejected, state => {
+                state.loading = false
+            })
+
+            // EditUser
+            .addCase(fetchEditUser.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchEditUser.fulfilled, (state: UserState, action) => {
+                console.log('user', action.payload)
+                state.loading = false
+                // @ts-ignore
+                state.user = action.payload.data
+                state.status = true
+                state.error = action.payload.error
+            })
+            .addCase(fetchEditUser.rejected, state => {
                 state.loading = false
             })
 
@@ -99,7 +118,9 @@ const userSlice = createSlice({
     }
 })
 
-const { reducer } = userSlice
-
+const { actions, reducer } = userSlice
+export const {
+    clearUserState
+} = actions
 export default reducer
 

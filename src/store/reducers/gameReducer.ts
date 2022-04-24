@@ -1,70 +1,58 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import {GamesState} from "../../types/index";
-import {getGames} from '../../api/index'
+import {GameState} from "../../types/index";
+import {createGame} from '../../api/index'
 
-const initialState : GamesState = {
-    games: [],
+const initialState: GameState = {
+    game: null,
     status: null,
     error: null,
     loading: false
 };
 
-export const fetchGames = createAsyncThunk(
-    'games/fetchGames',
+export const fetchCreateGame = createAsyncThunk(
+    'game/fetchGame',
     async (data: object) => {
-        return await getGames(data);
+        return await createGame(data);
     }
 )
 
-
-export const fetchGamesOffset = createAsyncThunk(
-    'games/fetchGamesOffset',
-    async (data: object) => {
-        console.log('data', data)
-        return await getGames(data);
-    }
-)
-
-const gamesSlice = createSlice({
-    name: 'games',
+const gameSlice = createSlice({
+    name: 'game',
     initialState,
     reducers: {
-
+        clearGameState: state => {
+            state.loading = false
+            state.game = null
+            state.status = null
+            state.error = null
+        }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchGames.pending, state => {
+            .addCase(fetchCreateGame.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchGames.fulfilled, (state, action) => {
-                console.log('games', action.payload)
+            .addCase(fetchCreateGame.fulfilled, (state: GameState, action) => {
+                console.log('game', action.payload)
                 state.loading = false
-                state.games = action.payload?.data
+                //@ts-ignore
+                state.game = action.payload?.data
                 state.status = true
+                state.error = action.payload.error
             })
-            .addCase(fetchGames.rejected, state => {
+            .addCase(fetchCreateGame.rejected, state => {
                 state.loading = false
             })
 
-            .addCase(fetchGamesOffset.pending, state => {
-                state.loading = true
-            })
-            .addCase(fetchGamesOffset.fulfilled, (state, action) => {
-                console.log('games', action.payload)
-                state.loading = false
-                state.games = action.payload?.data
-                state.status = true
-            })
-            .addCase(fetchGamesOffset.rejected, state => {
-                state.loading = false
-            })
 
             .addDefaultCase(() => {
             })
     }
 })
 
-const { reducer } = gamesSlice
-
+const { actions, reducer} = gameSlice
+export const {
+    clearGameState
+} = actions
 export default reducer
 

@@ -34,6 +34,13 @@ export interface GamesState{
     status: boolean | null
 }
 
+export interface GameState{
+    game: GameEntity | null,
+    loading: boolean,
+    error: string | null,
+    status: boolean | null
+}
+
 export interface LoginState{
     loading: boolean,
     loginError: string | undefined,

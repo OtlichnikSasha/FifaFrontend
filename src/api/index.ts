@@ -61,6 +61,27 @@ export const getGames = async (args: object) => {
     const url = `games`;
     return await api.get(url, args);
 };
+interface GameUser{
+    id: string
+}
+export const getGamesUser = async (args: GameUser) => {
+    const url = `games/${args.id}`;
+    return await api.get(url, {});
+};
+
+interface CabinetGames{
+    id: number
+}
+export const getCabinetGames = async (args: CabinetGames) => {
+    const url = `games/cabinet/${args.id}`;
+    return await api.get(url, {});
+};
+
+export const createGame = async (data: object) => {
+    const url = `games`;
+    return await api.post(url, data);
+};
+
 
 // const {token} = useTypedSelector(state => state.userLogin)
 // export async function getUser () {

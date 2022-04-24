@@ -15,46 +15,48 @@ export const User: FC = () => {
     useEffect(() => {
         document.title = "Пользователь"
         fetchUser({id})
+        // @ts-ignore
+        fetchGamesForUser({id})
     }, [])
-    const {fetchUser} = useActions()
-    const {user, status, loading, error} = useTypedSelector(state => state.user)
-    if (loading) {
-        return <Loader/>
-    }
+    const {fetchUser, fetchGamesForUser} = useActions()
+    const {user, loading} = useTypedSelector(state => state.user)
+    const {games} = useTypedSelector(state => state.games)
+    const gamesLoading = useTypedSelector(state => state.games.loading)
+    if (loading) return <Loader/>
     return (
         <div className="container">
             <div className="user_data_place">
                 <div className="heading">
-                    {user && user?.username} {user && user?.nameSurname ? (user?.nameSurname) : ''} ({user && user?.rating})
+                    {user?.username} {user?.nameSurname ? (user?.nameSurname) : ''} ({user?.rating})
                 </div>
             </div>
-            {/*{user && user?.games.length ? user?.games.map(game => {*/}
-            {/*        return (*/}
-            {/*            <div className="games_card" key={game.id}>*/}
-            {/*                <div className="games_card__teams_place">*/}
-            {/*                    <Link to={`/user/${game.players[0].id}`}*/}
-            {/*                          className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>*/}
-            {/*                        {game.players[0].username}*/}
-            {/*                    </Link>*/}
-            {/*                    <Link to={`/user/${game.players[1].id}`}*/}
-            {/*                          className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>*/}
-            {/*                        {game.players[1].username}*/}
-            {/*                    </Link>*/}
-            {/*                </div>*/}
-            {/*                <div className="games_card__score_place">*/}
-            {/*                    <div className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>*/}
-            {/*                        {game.score.split(":")[0]}*/}
-            {/*                    </div>*/}
-            {/*                    <div className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>*/}
-            {/*                        {game.score.split(":")[1]}*/}
-            {/*                    </div>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        )*/}
-            {/*    })*/}
-            {/*    :*/}
-            {/*    <div>Пользователь пока не играл матчей.</div>*/}
-            {/*}*/}
+            {!gamesLoading && games.length ? games.map(game => {
+                    return (
+                        <div className="games_card" key={game.id}>
+                            <div className="games_card__teams_place">
+                                <Link to={`/user/${game.players[0].id}`}
+                                      className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
+                                    {game.players[0].username}
+                                </Link>
+                                <Link to={`/user/${game.players[1].id}`}
+                                      className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
+                                    {game.players[1].username}
+                                </Link>
+                            </div>
+                            <div className="games_card__score_place">
+                                <div className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
+                                    {game.score.split(":")[0]}
+                                </div>
+                                <div className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
+                                    {game.score.split(":")[1]}
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+                :
+                <div>Пользователь пока не играл матчей.</div>
+            }
         </div>
     );
 };

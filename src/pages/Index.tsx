@@ -4,8 +4,6 @@ import {useActions} from "../hooks/useActions";
 import {AuthContext} from "../context/AuthContext";
 
 export const Index: FC = () => {
-    const {token} = useContext(AuthContext)
-
     useEffect(() => {
         document.title = "ТОП игроки"
         fetchUsers({})

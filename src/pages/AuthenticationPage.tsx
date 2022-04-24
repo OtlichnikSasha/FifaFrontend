@@ -10,7 +10,7 @@ export const AuthenticationPage: FC = () => {
         document.title = "Авторизация"
     }, [])
     const auth = useContext(AuthContext)
-    const {authLogin} = useActions()
+    const {authLogin, clearLoginUserState} = useActions()
     const navigate = useNavigate();
     const {username, loading, token, loginError, player_id} = useTypedSelector(state => state.userLogin)
     const [authData, setAuthData] = useState({
@@ -50,6 +50,7 @@ export const AuthenticationPage: FC = () => {
             setOpenNotification(false)
             setFrontendError("")
             setNotificationStatus("")
+            clearLoginUserState()
         }, 3000)
     }
 
@@ -57,6 +58,7 @@ export const AuthenticationPage: FC = () => {
         console.log(loading, username, token, loginError)
         if(!loading && username && token){
             auth.login(token, username, player_id)
+            clearLoginUserState()
             return navigate("/topPlayers")
         }
         if(loginError && !loading){
@@ -101,11 +103,9 @@ export const AuthenticationPage: FC = () => {
                 <div className="default_btn" onClick={login}>
                     Войти
                 </div>
-
                 <div className="offer_go_place">
                     <span>Нет аккаунта?</span><Link to="/user/sign_up" className="offer_go"> Зарегистрироваться</Link>
                 </div>
-
             </div>
         </div>
     );
