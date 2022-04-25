@@ -6,7 +6,6 @@ import {UserCard} from "./userCard";
 
 export const UsersList: FC = () => {
     const {users, status, loading, error} = useTypedSelector(state => state.users)
-
     if (loading) return <Loader/>
     return (
         <>

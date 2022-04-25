@@ -110,9 +110,9 @@ export const AddNewGames = () => {
                 <div className="user_new_game__item"/>
                 <div className="user_new_game__item">
                     <div className="score_input_place">
-                        <input className="score_input" type="number" onChange={changeUserScore}/>
+                        <input className="score_input" type="number" min="0" onChange={changeUserScore}/>
                         <span>:</span>
-                        <input className="score_input" type="number" onChange={changeRivalScore}/>
+                        <input className="score_input" type="number" min="0" onChange={changeRivalScore}/>
                     </div>
                 </div>
                 <div className="user_new_game__item"/>

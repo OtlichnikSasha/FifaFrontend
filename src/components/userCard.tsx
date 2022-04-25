@@ -13,8 +13,8 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
         <>
             {
                 i + 1 === 1 && <Link
-                                     className="data_players_place gold"
-                                     to={`/user/${user.id}`}
+                    className="data_players_place gold"
+                    to={`/user/${user.id}`}
                 >
                     <div className="heading_players">
                         🥇
@@ -26,8 +26,8 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
             }
             {
                 i + 1 === 2 && <Link
-                                     className="data_players_place silver"
-                                     to={`/user/${user.id}`}
+                    className="data_players_place silver"
+                    to={`/user/${user.id}`}
                 >
                     <div className="heading_players">
                         🥈
@@ -39,8 +39,8 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
             }
             {
                 i + 1 === 3 && <Link
-                                     className="data_players_place bronze"
-                                     to={`/user/${user.id}`}
+                    className="data_players_place bronze"
+                    to={`/user/${user.id}`}
                 >
                     <div className="heading_players">
                         🥉
@@ -53,8 +53,8 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
             {
                 i + 1 > 3 &&
                 <Link
-                                   className="data_players_place"
-                                   to={`/user/${user.id}`}
+                    className="data_players_place"
+                    to={`/user/${user.id}`}
                 >
                     <div className="heading_players">
                         {i + 1}

@@ -34,7 +34,8 @@ export interface GamesState{
     games: GameEntity[],
     loading: boolean,
     error: string | null,
-    status: boolean | null
+    status: boolean | null,
+    totalElements: number
 }
 
 export interface GameState{

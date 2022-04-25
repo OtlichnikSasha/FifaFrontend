@@ -62,20 +62,20 @@ export const getGames = async (args: object) => {
     return await api.get(url, args);
 };
 
-interface GameUser{
-    id: string
-}
-export const getGamesUser = async (args: GameUser) => {
-    const url = `games/${args.id}`;
-    return await api.get(url, {});
-};
-
-interface CabinetGames{
+interface GamesByUser{
     id: number,
     page: number,
     size: number
 }
-export const getCabinetGames = async (args: CabinetGames) => {
+export const getGamesUser = async (args: GamesByUser) => {
+    const url = `games/${args.id}`;
+    // @ts-ignore
+    delete args['id']
+    return await api.get(url, args);
+};
+
+
+export const getCabinetGames = async (args: GamesByUser) => {
     const url = `games/cabinet/${args.id}`;
     // @ts-ignore
     delete args['id']

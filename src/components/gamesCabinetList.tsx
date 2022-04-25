@@ -4,14 +4,13 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useActions";
 import {Notification} from "./block/notification";
 import {fetchGamesForCabinet} from "../store/reducers/gamesReducer";
+import {Empty} from "./block/empty";
 
 export const GamesCabinetList: FC = () => {
-    const page = 0;
-    const size = 20;
     const {fetchAcceptGame, fetchRemoveGame, clearGameState} = useActions()
     const {games, loading} = useTypedSelector(state => state.games)
     const {user} = useTypedSelector(state => state.user)
-    const {game, error, status} = useTypedSelector(state => state.game)
+    const {error, status} = useTypedSelector(state => state.game)
     const gameLoading = useTypedSelector(state => state.game.loading)
     const [checker, setChecker] = useState(false)
     const [openNotification, setOpenNotification] = useState(false)
@@ -61,7 +60,7 @@ export const GamesCabinetList: FC = () => {
         <>
             <Notification openNotification={openNotification} frontendError={frontendError}
                           status={notificationStatus}/>
-            {!loading && games && games.length ? games.map(game => {
+            {games && games.length ? games.map(game => {
                     return (
                         <div className="games_card" key={game.id}>
                             <div className="games_card__teams_place">
@@ -109,8 +108,9 @@ export const GamesCabinetList: FC = () => {
                     )
                 })
                 :
-                <div>Вы пока не играли матчей.</div>
+                <Empty label="Вы пока не играли матчей." loading={loading}/>
             }
+            {loading && <div className="preloader_text"/> }
         </>
     );
 };

@@ -8,9 +8,17 @@ import {AddNewGames} from "../components/addNewGames";
 import {GamesCabinetList} from "../components/gamesCabinetList";
 
 export const Cabinet: FC = () => {
-    let page = 0;
+    const [page, setPage] = useState(0)
+    const [final, setFinal] = useState(false)
+    const [fetching, setFetching] = useState(false)
     const size = 20;
-    const {fetchUserCabinet, fetchEditUser, fetchGamesForCabinet, clearUserState} = useActions()
+    const {
+        fetchUserCabinet,
+        fetchEditUser,
+        fetchGamesForCabinet,
+        fetchGamesOffsetForCabinet,
+        clearUserState
+    } = useActions()
     const {token} = useContext(AuthContext)
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
@@ -24,7 +32,8 @@ export const Cabinet: FC = () => {
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
     const {user, loading} = useTypedSelector(state => state.user)
-
+    const {totalElements} = useTypedSelector(state => state.games)
+    const gamesLoading = useTypedSelector(state => state.games.loading)
     const getUser = useCallback(() => {
         document.title = "Личный кабинет"
         fetchUserCabinet({token})
@@ -50,9 +59,7 @@ export const Cabinet: FC = () => {
     }, [getUserGames])
 
 
-    if (loading) {
-        return <Loader/>
-    }
+
     const openNewGamePlace = () => {
         if (open) {
             setOpen(false)
@@ -73,6 +80,34 @@ export const Cabinet: FC = () => {
             fetchEditUser(userData)
         }
     }
+
+    useEffect(() => {
+        if (!final) {
+            document.addEventListener('scroll', scrollHandler)
+            return function () {
+                document.removeEventListener('scroll', scrollHandler)
+            };
+        }
+    }, [])
+    const scrollHandler = (e: any) => {
+        if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
+            setFetching(true)
+        }
+    }
+
+    const getGamesWithOffset = useCallback(() => {
+        if (fetching && !gamesLoading && !final) {
+            setPage(page + 1)
+            // @ts-ignore
+            fetchGamesOffsetForCabinet({id: user.id, page, size})
+            setFetching(false)
+            if (totalElements < size) setFinal(true)
+        }
+    }, [fetching, gamesLoading])
+
+    useEffect(() => {
+        getGamesWithOffset()
+    }, [getGamesWithOffset])
 
     // const editUserChecker = useCallback(() => {
     //     if (!loading && checker) {
@@ -101,6 +136,7 @@ export const Cabinet: FC = () => {
             clearUserState()
         }, 3000)
     }
+    if (loading) return <Loader/>
     return (
         <div className="container">
             <Notification openNotification={openNotification} frontendError={frontendError}
