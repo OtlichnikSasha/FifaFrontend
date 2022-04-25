@@ -1,14 +1,15 @@
 @import "default";
 
 /*=== Регистрация и авторизация ===*/
-.modal_window_place{
+.modal_window_place {
   width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.modal_window{
+
+.modal_window {
   width: 50%;
   height: 60%;
   box-shadow: 2px 5px 5px 5px #c1c1c1;
@@ -16,29 +17,33 @@
   padding: 15px 25px 5px;
   background: #FFFFFF;
 }
+
 @media screen and (max-width: 900px) {
-  .modal_window{
+  .modal_window {
     width: 80%;
   }
 }
 
-.label{
+.label {
   font-size: $fontSize;
   margin: 10px 0;
 }
-.default_input{
+
+.default_input {
   border: 1px solid #c1c0c0;
   border-radius: 5px;
   padding: 10px 5px;
   font-size: 16px;
   width: 100%;
 }
-.default_input:focus{
+
+.default_input:focus {
   border: 1px solid #c1c0c0;
   box-shadow: 2px 1px 2px 1px #c1c0c0;
   transition: box-shadow .3s;
 }
-.default_btn{
+
+.default_btn {
   border: 1px solid #c1c0c0;
   border-radius: 5px;
   padding: 10px 5px;
@@ -50,26 +55,29 @@
   color: #FFFFFF;
   transition: all .3s;
 }
-.default_btn:hover{
+
+.default_btn:hover {
   box-shadow: 2px 1px 2px 1px $grey;
   transition: all .3s;
 }
+
 @media screen and (max-width: 550px) {
-  .label{
+  .label {
     font-size: 15px;
   }
-  .default_input{
+  .default_input {
     font-size: 14px;
   }
-  .default_btn{
+  .default_btn {
     margin-top: 15px;
   }
-  .heading{
+  .heading {
     font-size: 24px;
   }
 }
+
 /* Notification */
-.notification{
+.notification {
   transform: translate(120%, 0);
   position: absolute;
   bottom: 40px;
@@ -79,27 +87,33 @@
   min-width: 250px;
   max-width: 350px;
 }
-.notification._active{
+
+.notification._active {
   transform: translate(0, 0);
   transition: transform .4s;
 }
-.notification_data{
+
+.notification_data {
   border-radius: 5px;
   font-weight: bold;
 }
-.notification_data.success{
+
+.notification_data.success {
   background: #4ffa4f;
 }
-.notification_data.error{
+
+.notification_data.error {
   background: #c90303;
 }
-.notification_heading{
+
+.notification_heading {
   text-align: center;
   border-bottom: 2px solid $grey;
   font-size: 16px;
   padding: 10px 20px;
 }
-.notification_text{
+
+.notification_text {
   text-align: center;
   font-size: 14px;
   padding: 10px 20px;
@@ -126,6 +140,7 @@
     border-radius: 50%;
   }
 }
+
 /* Loader */
 .lds-roller {
   display: inline-block;
@@ -257,12 +272,13 @@
 }
 
 /* Top игроки */
-.heading_players_place{
+.heading_players_place {
   display: flex;
   align-items: center;
   width: 50%;
   transition: background .3s;
-  .heading_players{
+
+  .heading_players {
     background: #1b4468;
     color: #FFFFFF;
     border-right: 1px solid #e6e4e4;
@@ -272,65 +288,75 @@
     font-weight: bold;
     border-radius: 2px;
   }
-  .heading_players:last-child{
+
+  .heading_players:last-child {
     border: 0;
   }
 }
-.data_players_place{
+
+.data_players_place {
   display: flex;
   align-items: center;
   width: 50%;
   border-bottom: 1px solid #e6e4e4;
   margin-bottom: 2px;
   transition: all .3s;
-  .heading_players{
+
+  .heading_players {
     padding: 15px 0;
     width: 50%;
     text-align: center;
   }
-  .heading_players:last-child{
+
+  .heading_players:last-child {
     border: 0;
   }
 }
+
 @media screen and (max-width: 900px) and (min-width: 700px) {
   .heading_players_place {
     width: 80%;
   }
-  .data_players_place{
+  .data_players_place {
     width: 80%;
   }
 }
+
 @media screen and (max-width: 700px) and (min-width: 200px) {
   .heading_players_place {
     width: 100%;
   }
-  .data_players_place{
+  .data_players_place {
     width: 100%;
   }
 }
-.data_players_place.gold{
+
+.data_players_place.gold {
   color: #ffdb1e;
   font-weight: bold;
   font-size: 22px;
 }
-.data_players_place.silver{
+
+.data_players_place.silver {
   color: #a2a2a2;
   font-weight: bold;
   font-size: 20px;
 }
-.data_players_place.bronze{
+
+.data_players_place.bronze {
   color: #875d1d;
   font-weight: bold;
   font-size: 18px;
 }
-.data_players_place:hover{
+
+.data_players_place:hover {
   background: $blue;
   color: #FFFFFF;
   transition: all .3s;
 }
 
 /*=== Результаты матчей ===*/
-.games_card{
+.games_card {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -338,97 +364,136 @@
   padding: 10px 0;
   width: 100%;
 }
-.games_card:first-child{
+
+.games_card:first-child {
   border-top: 2px solid #e6e4e4;
 }
-.games_card__teams_place{
+
+.games_card__teams_place {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.games_card__score_place{
+
+.games_card__score_place {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.games_card__data{
+
+.games_card__data {
   padding-bottom: 15px;
   font-size: 20px;
 }
-.games_card__data.winner{
+
+.games_card__data.winner {
   font-weight: bold;
 }
-.games_card__data:last-child{
+
+.games_card__data:last-child {
   padding-bottom: 0;
 }
-.games_card__accept_data{
+
+.games_card__accept_data {
   display: flex;
   flex-direction: column;
   justify-content: center;
   font-weight: bold;
 }
 
+.games_card__action_btn {
+  border: 1px solid #c1c0c0;
+  border-radius: 5px;
+  padding: 8px 5px;
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+  background: $blue;
+  color: #FFFFFF;
+  transition: all .3s;
+}
+.games_card__action_btn.red{
+  background: #f83b3b;
+  margin-top: 5px;
+}
+.games_card__action_btn:hover {
+  box-shadow: 2px 1px 2px 1px $grey;
+  transition: all .3s;
+}
+
 /* Страница пользователя */
-.user_new_game_place{
+.user_new_game_place {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: space-between;
   margin-top: 25px;
 }
-.user_new_game__item{
+
+.user_new_game__item {
   width: 30%;
   font-weight: bold;
   position: relative;
-  span{
+
+  span {
     display: block;
   }
-  .users_search_items{
+
+  .users_search_items {
     position: absolute;
     top: 60px;
     width: 100%;
     background: #FFFFFF;
     padding: 10px 0;
   }
-  .user_search_item{
+
+  .user_search_item {
     padding: 8px 5px;
     display: block;
     cursor: pointer;
     transition: background .3s;
   }
-  .user_search_item:hover{
+
+  .user_search_item:hover {
     background: #1b75e8;
     transition: background .3s;
   }
-  .user_search_item._active{
+
+  .user_search_item._active {
     background: #1b75e8;
   }
 }
-.user_new_game__item:nth-child(2n){
+
+.user_new_game__item:nth-child(2n) {
   text-align: center;
 }
-.score_input_place{
+
+.score_input_place {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
 }
-.score_input{
+
+.score_input {
   width: 45%;
   padding: 8px 10px;
   border-radius: 10px;
-  border:1px solid #c1c0c0;
+  border: 1px solid #c1c0c0;
 }
-.score_input:focus{
-  border:1px solid #7e7e7e;
+
+.score_input:focus {
+  border: 1px solid #7e7e7e;
 }
-.user_data_place{
+
+.user_data_place {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 25px 0;
-  .heading{
+  padding: 50px 0 25px 0;
+
+  .heading {
     text-align: left;
   }
 }

@@ -4,6 +4,7 @@ import {AuthContext} from "../context/AuthContext";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useActions";
 import {Notification} from "./block/notification";
+import {SearchList} from "./searchList";
 
 export const AddNewGames = () => {
     const {fetchUsersSearch, fetchCreateGame, fetchGamesForCabinet, clearGameState} = useActions()
@@ -20,12 +21,10 @@ export const AddNewGames = () => {
     const [scoreUser, setScoreUser] = useState(0)
     const [scoreRival, setScoreRival] = useState(0)
     const [checker, setChecker] = useState(false)
-    const {user, loading} = useTypedSelector(state => state.user)
     const {users} = useTypedSelector(state => state.usersSearch)
-    const searchLoading = useTypedSelector(state => state.usersSearch.loading)
+    const {user, loading} = useTypedSelector(state => state.user)
     const {status, error} = useTypedSelector(state => state.game)
     const matchLoading = useTypedSelector(state => state.game.loading)
-
     const changeRival = (user: UserEntity) => setRival(user)
     const changeHandler = (event: any) => {
         if (event.target.value) {
@@ -44,25 +43,27 @@ export const AddNewGames = () => {
     const changeUserScore = (event: any) => setScoreUser(event.target.value)
     const changeRivalScore = (event: any) => setScoreRival(event.target.value)
     const addMatch = () => {
-        if(user && rival && scoreRival && scoreUser){
+        if (user && rival && scoreRival && scoreUser) {
             console.log('addMatch', rival, scoreRival, scoreUser)
             const gameData = {
                 player1: {id: user?.id},
                 player2: {id: rival.id},
-                score: `${scoreUser}:${scoreRival}`
+                scoreOne: `${scoreUser}`,
+                scoreTwo: `${scoreRival}`,
+                creatorId: user?.id
+
             }
             setChecker(true)
             fetchCreateGame(gameData)
-
         }
     }
     const matchChecker = useCallback(() => {
-        if(!matchLoading && checker){
-            if(status){
+        if (!matchLoading && checker) {
+            if (status) {
                 // @ts-ignore
                 return fetchGamesForCabinet({id: user.id})
             }
-            if(!status && error){
+            if (!status && error) {
                 setFrontendError(error)
                 setOpenNotification(true)
                 setNotificationStatus("error")
@@ -99,23 +100,10 @@ export const AddNewGames = () => {
                 </div>
                 <div className="user_new_game__item">
                             <span>
-                                {rival?.username} {rival?.nameSurname ? (rival?.nameSurname) : ''} {rival ? (rival?.rating) : ''}
+                                {rival?.username} {rival?.nameSurname} ({rival?.rating})
                             </span>
-                    <input className="default_input" onChange={changeHandler} />
-                    <div className="users_search_items">
-                        {
-                            !searchLoading && users.length ? users.map(user => {
-                                    return (
-                                        <div className="user_search_item" key={user.id}
-                                             onClick={() => changeRival(user)}>
-                                            {user.username}
-                                        </div>
-                                    )
-                                })
-                                :
-                                <></>
-                        }
-                    </div>
+                    <input className="default_input" onChange={changeHandler}/>
+                    {users.length ? <SearchList changeRival={changeRival}/> : <></>}
                 </div>
             </div>
             <div className="user_new_game_place">
@@ -130,10 +118,12 @@ export const AddNewGames = () => {
                 <div className="user_new_game__item"/>
             </div>
             {
-                rival &&
-                <div className="default_btn" onClick={addMatch}>
-                    Сохранить
-                </div>
+                rival && scoreRival && scoreUser ?
+                    <div className="default_btn" onClick={addMatch}>
+                        Сохранить
+                    </div>
+                    :
+                    <></>
             }
         </>
     );

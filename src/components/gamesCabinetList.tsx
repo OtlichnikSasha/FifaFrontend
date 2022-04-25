@@ -28,6 +28,9 @@ export const GamesCabinetList: FC = () => {
     const gameChecker = useCallback(() => {
         if (!gameLoading && checker) {
             if (status) {
+                setFrontendError("Успешно")
+                setOpenNotification(true)
+                setNotificationStatus("success")
                 //@ts-ignore
                 return fetchGamesForCabinet({id: user.id, page, size})
             }
@@ -62,32 +65,30 @@ export const GamesCabinetList: FC = () => {
                     return (
                         <div className="games_card" key={game.id}>
                             <div className="games_card__teams_place">
-                                <Link to={`/user/${game.players[0].id}`}
-                                      className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.players[0].username}
+                                <Link to={`/user/${game.creatorId === game.players[0].id ? game.players[0].id : game.players[1].id}`}
+                                      className={game.scoreOne > game.scoreTwo ? "games_card__data winner" : "games_card__data"}>
+                                    {game.creatorId === game.players[0].id ? game.players[0].username : game.players[1].username}
                                 </Link>
-
-
-                                <Link to={`/user/${game.players[1].id}`}
-                                      className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.players[1].username}
+                                <Link to={`/user/${game.creatorId !== game.players[0].id ? game.players[0].id : game.players[1].id}`}
+                                      className={game.scoreOne < game.scoreTwo ? "games_card__data winner" : "games_card__data"}>
+                                    {game.creatorId !== game.players[0].id ? game.players[0].username : game.players[1].username}
                                 </Link>
                             </div>
                             {
-                                !game.status && game.players[0].id === user?.id ?
+                                !game.status && game.creatorId === user?.id ?
                                     <div className="games_card__accept_data">
-                                        Ожидается подтверждение от {game.players[1].username}
+                                        Ожидается подтверждение от {game.creatorId !== game.players[0].id ? game.players[0].username : game.players[1].username}
                                     </div>
                                     :
                                     <></>
                             }
                             {
-                                !game.status && game.players[0].id !== user?.id ?
+                                !game.status && game.creatorId !== user?.id ?
                                     <div className="games_card__accept_data">
-                                        <div className="default_btn" onClick={() => acceptMatch(game.id)}>
+                                        <div className="games_card__action_btn" onClick={() => acceptMatch(game.id)}>
                                             Согласиться с результатом
                                         </div>
-                                        <div className="default_btn" onClick={() => removeMatch(game.id)}>
+                                        <div className="games_card__action_btn red" onClick={() => removeMatch(game.id)}>
                                             Не согласиться с результатом
                                         </div>
                                     </div>
@@ -96,12 +97,12 @@ export const GamesCabinetList: FC = () => {
                             }
                             <div className="games_card__score_place">
                                 <div
-                                    className={game.score.split(":")[0] > game.score.split(":")[1] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.score.split(":")[0]}
+                                    className={game.scoreOne > game.scoreTwo ? "games_card__data winner" : "games_card__data"}>
+                                    {game.scoreOne }
                                 </div>
                                 <div
-                                    className={game.score.split(":")[1] > game.score.split(":")[0] ? "games_card__data winner" : "games_card__data"}>
-                                    {game.score.split(":")[1]}
+                                    className={game.scoreOne < game.scoreTwo ? "games_card__data winner" : "games_card__data"}>
+                                    {game.scoreTwo}
                                 </div>
                             </div>
                         </div>

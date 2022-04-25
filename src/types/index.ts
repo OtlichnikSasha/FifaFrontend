@@ -9,8 +9,10 @@ export interface UserEntity{
 export interface GameEntity{
     id: number,
     players: UserEntity[],
-    score: string,
-    status: boolean
+    scoreOne: number,
+    scoreTwo: number,
+    status: boolean,
+    creatorId: number
 }
 
 export interface UsersState{
