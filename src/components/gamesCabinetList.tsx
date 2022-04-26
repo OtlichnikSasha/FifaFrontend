@@ -3,11 +3,10 @@ import {Link} from "react-router-dom";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {useActions} from "../hooks/useActions";
 import {Notification} from "./block/notification";
-import {fetchGamesForCabinet} from "../store/reducers/gamesReducer";
 import {Empty} from "./block/empty";
 
 export const GamesCabinetList: FC = () => {
-    const {fetchAcceptGame, fetchRemoveGame, clearGameState} = useActions()
+    const {fetchAcceptGame, fetchRemoveGame, clearGameState, fetchGamesForCabinet} = useActions()
     const {games, loading} = useTypedSelector(state => state.games)
     const {user} = useTypedSelector(state => state.user)
     const {error, status} = useTypedSelector(state => state.game)
@@ -27,11 +26,12 @@ export const GamesCabinetList: FC = () => {
     const gameChecker = useCallback(() => {
         if (!gameLoading && checker) {
             if (status) {
-                setFrontendError("Успешно")
+                setFrontendError("")
                 setOpenNotification(true)
                 setNotificationStatus("success")
                 //@ts-ignore
-                return fetchGamesForCabinet({id: user.id, page, size})
+                fetchGamesForCabinet({id: user?.id, page: 0, size: 20})
+                return clearTimeout()
             }
             if (!status && error) {
                 setFrontendError(error)
@@ -60,7 +60,7 @@ export const GamesCabinetList: FC = () => {
         <>
             <Notification openNotification={openNotification} frontendError={frontendError}
                           status={notificationStatus}/>
-            {games && games.length ? games.map(game => {
+            {games.length ? games.map(game => {
                     return (
                         <div className="games_card" key={game.id}>
                             <div className="games_card__teams_place">

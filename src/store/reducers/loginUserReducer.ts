@@ -44,7 +44,6 @@ const userLoginSlice = createSlice({
                 state.loading = true
             })
             .addCase(authLogin.fulfilled, (state: LoginState, action) => {
-                console.log('action.payload authLogin', action.payload)
                 // @ts-ignore
                 state.username = action.payload.data?.username
                 // @ts-ignore
@@ -60,9 +59,6 @@ const userLoginSlice = createSlice({
             // Logout
             .addCase(authLogout.pending, state => {
                 state.loading = true
-            })
-            .addCase(authLogout.fulfilled, (state, action) => {
-                console.log('action.payload authLogout', action.payload)
             })
             .addCase(authLogout.rejected, (state) => {
                 state.loading = false

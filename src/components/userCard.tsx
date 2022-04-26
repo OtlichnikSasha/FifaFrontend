@@ -8,7 +8,6 @@ interface PropsTypes {
 }
 
 export const UserCard: FC<PropsTypes> = ({i, user}) => {
-
     return (
         <>
             {
@@ -65,7 +64,6 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
                 </Link>
             }
         </>
-    )
-        ;
+    );
 };
 

@@ -22,7 +22,12 @@ const usersSearchSlice = createSlice({
     name: 'usersSearch',
     initialState,
     reducers: {
-
+        clearUsersState: state => {
+            state.loading = false
+            state.users = []
+            state.status = null
+            state.error = null
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -30,7 +35,6 @@ const usersSearchSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUsersSearch.fulfilled, (state: UsersState, action) => {
-                console.log('usersSearch', action.payload)
                 state.loading = false
                 state.users = action.payload.data
                 state.status = true
@@ -44,7 +48,9 @@ const usersSearchSlice = createSlice({
     }
 })
 
-const { reducer } = usersSearchSlice
-
+const { actions, reducer} = usersSearchSlice
+export const {
+    clearUsersState
+} = actions
 export default reducer
 

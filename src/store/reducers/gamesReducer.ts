@@ -62,7 +62,6 @@ const gamesSlice = createSlice({
     name: 'games',
     initialState,
     reducers: {
-
     },
     extraReducers: (builder) => {
         builder
@@ -70,7 +69,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGames.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = action.payload.data.content
@@ -86,7 +84,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGamesOffset.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = state.games.concat(action.payload.data.content)
@@ -102,7 +99,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGamesForCabinet.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = action.payload.data.content
@@ -118,7 +114,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGamesOffsetForUser.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = state.games.concat(action.payload.data.content)
@@ -137,7 +132,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGamesForUser.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = action.payload.data.content
@@ -153,7 +147,6 @@ const gamesSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchGamesOffsetForCabinet.fulfilled, (state: GamesState, action) => {
-                console.log('games', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.games = state.games.concat(action.payload.data.content)
@@ -165,14 +158,12 @@ const gamesSlice = createSlice({
                 state.loading = false
             })
 
-
-
             .addDefaultCase(() => {
             })
     }
 })
 
-const { reducer } = gamesSlice
+const { reducer} = gamesSlice
 
 export default reducer
 

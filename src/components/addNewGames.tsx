@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react';
+import React, {useCallback, useContext, useEffect, useState, useRef} from 'react';
 import {UserEntity} from "../types";
 import {AuthContext} from "../context/AuthContext";
 import {useTypedSelector} from "../hooks/useTypedSelector";
@@ -7,7 +7,7 @@ import {Notification} from "./block/notification";
 import {SearchList} from "./searchList";
 
 export const AddNewGames = () => {
-    const {fetchUsersSearch, fetchCreateGame, fetchGamesForCabinet, clearGameState} = useActions()
+    const {fetchUsersSearch, fetchCreateGame, fetchGamesForCabinet, clearGameState, clearUsersState} = useActions()
     const {token} = useContext(AuthContext)
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
@@ -18,14 +18,21 @@ export const AddNewGames = () => {
         username: '',
         token: token
     })
+    const searchRef = useRef(null)
     const [scoreUser, setScoreUser] = useState(0)
     const [scoreRival, setScoreRival] = useState(0)
     const [checker, setChecker] = useState(false)
     const {users} = useTypedSelector(state => state.usersSearch)
-    const {user, loading} = useTypedSelector(state => state.user)
+    const {user} = useTypedSelector(state => state.user)
     const {status, error} = useTypedSelector(state => state.game)
     const matchLoading = useTypedSelector(state => state.game.loading)
-    const changeRival = (user: UserEntity) => setRival(user)
+    const changeRival = (user: UserEntity) => {
+        setRival(user)
+        clearUsersState()
+        // @ts-ignore
+        searchRef.current.value = null;
+    }
+    // @ts-ignore
     const changeHandler = (event: any) => {
         if (event.target.value) {
             setSearchData({
@@ -40,11 +47,16 @@ export const AddNewGames = () => {
         }
     }
 
-    const changeUserScore = (event: any) => setScoreUser(event.target.value)
-    const changeRivalScore = (event: any) => setScoreRival(event.target.value)
+    const changeUserScore = (event: any) => {
+        event.target.value = event.target.value.replace("-", '')
+        setScoreUser(event.target.value)
+    }
+    const changeRivalScore = (event: any) => {
+        event.target.value = event.target.value.replace("-", '')
+        setScoreRival(event.target.value)
+    }
     const addMatch = () => {
         if (user && rival && scoreRival && scoreUser) {
-            console.log('addMatch', rival, scoreRival, scoreUser)
             const gameData = {
                 player1: {id: user?.id},
                 player2: {id: rival.id},
@@ -60,8 +72,12 @@ export const AddNewGames = () => {
     const matchChecker = useCallback(() => {
         if (!matchLoading && checker) {
             if (status) {
+                setFrontendError("")
+                setOpenNotification(true)
+                setNotificationStatus("success")
                 // @ts-ignore
-                return fetchGamesForCabinet({id: user.id})
+                fetchGamesForCabinet({id: user.id})
+                return clearTimeout()
             }
             if (!status && error) {
                 setFrontendError(error)
@@ -100,9 +116,9 @@ export const AddNewGames = () => {
                 </div>
                 <div className="user_new_game__item">
                             <span>
-                                {rival?.username} {rival?.nameSurname} ({rival?.rating})
+                                {rival?.username} {rival?.nameSurname} {rival ? (rival.rating) : ''}
                             </span>
-                    <input className="default_input" onChange={changeHandler}/>
+                    <input className="default_input" ref={searchRef} onChange={changeHandler}/>
                     {users.length ? <SearchList changeRival={changeRival}/> : <></>}
                 </div>
             </div>

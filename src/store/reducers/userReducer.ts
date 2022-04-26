@@ -56,11 +56,10 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUserCabinet.fulfilled, (state: UserState, action) => {
-                console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload.data
-                state.status = true
+                state.status = action.payload.status
             })
             .addCase(fetchUserCabinet.rejected, state => {
                 state.loading = false
@@ -70,7 +69,6 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchRegistration.fulfilled, (state: UserState, action) => {
-                console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload?.data
@@ -86,7 +84,6 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUser.fulfilled, (state: UserState, action) => {
-                console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload.data
@@ -102,7 +99,6 @@ const userSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchEditUser.fulfilled, (state: UserState, action) => {
-                console.log('user', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload.data

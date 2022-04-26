@@ -49,17 +49,43 @@ const gameSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchCreateGame.fulfilled, (state: GameState, action) => {
-                console.log('game', action.payload)
                 state.loading = false
                 //@ts-ignore
                 state.game = action.payload?.data
-                state.status = true
+                state.status = action.payload.status
                 state.error = action.payload.error
             })
             .addCase(fetchCreateGame.rejected, state => {
                 state.loading = false
             })
 
+            .addCase(fetchAcceptGame.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchAcceptGame.fulfilled, (state: GameState, action) => {
+                state.loading = false
+                //@ts-ignore
+                state.game = action.payload?.data
+                state.status = action.payload.status
+                state.error = action.payload.error
+            })
+            .addCase(fetchAcceptGame.rejected, state => {
+                state.loading = false
+            })
+
+            .addCase(fetchRemoveGame.pending, state => {
+                state.loading = true
+            })
+            .addCase(fetchRemoveGame.fulfilled, (state: GameState, action) => {
+                state.loading = false
+                //@ts-ignore
+                state.game = action.payload?.data
+                state.status = action.payload.status
+                state.error = action.payload.error
+            })
+            .addCase(fetchRemoveGame.rejected, state => {
+                state.loading = false
+            })
 
             .addDefaultCase(() => {
             })

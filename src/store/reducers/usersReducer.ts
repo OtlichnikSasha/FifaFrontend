@@ -22,7 +22,6 @@ export const fetchUsers = createAsyncThunk(
 export const fetchUsersOffset = createAsyncThunk(
     'users/fetchUsersOffset',
     async (data: object) => {
-        console.log('data', data)
         return await getPlayers(data);
     }
 )
@@ -40,7 +39,6 @@ const usersSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUsers.fulfilled, (state:UsersState, action) => {
-                console.log('users', action.payload)
                 state.loading = false
                 // @ts-ignore
                 state.users = action.payload.data.content
@@ -54,7 +52,6 @@ const usersSlice = createSlice({
                 state.loading = true
             })
             .addCase(fetchUsersOffset.fulfilled, (state, action) => {
-                console.log('users', action.payload)
                 state.loading = false
                 state.users = state.users.concat(action.payload.data)
                 state.status = true

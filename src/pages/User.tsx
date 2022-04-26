@@ -10,8 +10,9 @@ interface UserParams {
 }
 
 export const User: FC = () => {
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
+    const [firstLoading, setFirstLoading] = useState(true)
     const size = 20;
     // @ts-ignore
     const {id}: UserParams = useParams()
@@ -19,7 +20,7 @@ export const User: FC = () => {
         document.title = "Пользователь"
         fetchUser({id})
         // @ts-ignore
-        fetchGamesForUser({id, page, size})
+        fetchGamesForUser({id, page: 0, size})
     }, [id])
 
     useEffect(() => {
@@ -32,31 +33,43 @@ export const User: FC = () => {
     const {totalElements} = useTypedSelector(state => state.games)
     const gamesLoading = useTypedSelector(state => state.games.loading)
     useEffect(() => {
-        document.addEventListener('scroll', scrollHandler)
-        return function () {
-            document.removeEventListener('scroll', scrollHandler)
-        };
+        if (!final || !fetching) {
+            document.addEventListener('scroll', scrollHandler)
+            return function () {
+                document.removeEventListener('scroll', scrollHandler)
+            };
+        }
     }, [])
     const scrollHandler = (e: any) => {
-        if (!final && e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
+        if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
             setFetching(true)
         }
     }
 
-
     const getGamesWithOffset = useCallback(() => {
         if (fetching && !gamesLoading && !final) {
-            setPage(page+1)
             // @ts-ignore
             fetchGamesOffsetForUser({id, page, size})
-            setFetching(false)
-            if(totalElements < size) setFinal(true)
+            setFirstLoading(false)
         }
-    }, [fetching, gamesLoading])
+    }, [fetching])
 
     useEffect(() => {
         getGamesWithOffset()
     }, [getGamesWithOffset])
+
+    const offsetGamesTrigger = useCallback(() => {
+        if (!gamesLoading && !firstLoading) {
+            if (totalElements < size) setFinal(true)
+            else setFinal(false)
+            setPage(page + 1)
+            setFetching(false)
+        }
+    }, [totalElements])
+
+    useEffect(() => {
+        offsetGamesTrigger()
+    }, [offsetGamesTrigger])
 
     if (loading) return <Loader/>
     return (

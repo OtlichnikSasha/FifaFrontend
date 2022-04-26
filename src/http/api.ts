@@ -9,13 +9,11 @@ export class api {
         };
         try {
             const res = await http.get(url, { params: { ...args}, headers : {...headers} })
-            console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
                 result.data = res.data;
             }
         } catch (e: any) {
-            console.log('error', e.response.data.error)
             result.error = e.response.data.message
         }
         return result;
@@ -29,7 +27,6 @@ export class api {
         };
         try {
             const res = await http.post(url, data )
-            console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
                 result.data = res.data;
@@ -58,7 +55,6 @@ export class api {
                 result.data = res.data;
             }
         } catch (e: any) {
-            console.log('error', e.response.data.error)
             result.error = e.response.data.message
             return result
         }
@@ -73,13 +69,11 @@ export class api {
         };
         try {
             const res = await http.delete(url, { params: { ...args}, headers : {...headers} })
-            console.log('res', res)
             if (res.status === 200) {
                 result.status = true;
                 result.data = res.data;
             }
         } catch (e: any) {
-            console.log('error', e.response.data.error)
             result.error = e.response.data.message
         }
         return result;

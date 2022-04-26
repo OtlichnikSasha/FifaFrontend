@@ -100,11 +100,3 @@ export const removeGame = async (args: DeleteArgs) => {
     const url = `games/${args.id}`;
     return await api.delete(url, {});
 };
-
-
-// const {token} = useTypedSelector(state => state.userLogin)
-// export async function getUser () {
-//     if (token) {
-//         return jwtDecode(token)
-//     }
-// }

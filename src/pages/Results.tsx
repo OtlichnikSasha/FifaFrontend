@@ -4,46 +4,60 @@ import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 
 export const Results: FC = () => {
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
+    const [firstLoading, setFirstLoading] = useState(true)
     const size = 20;
     const [fetching, setFetching] = useState(false)
     const getGames = useCallback(() => {
         document.title = "Результаты матчей"
-        fetchGames({page, size})
+        fetchGames({page: 0, size})
     }, [])
 
     useEffect(() => {
         getGames()
     }, [getGames])
 
-
     const {fetchGames, fetchGamesOffset} = useActions()
     const {loading, totalElements} = useTypedSelector(state => state.games)
     useEffect(() => {
-        document.addEventListener('scroll', scrollHandler)
-        return function () {
-            document.removeEventListener('scroll', scrollHandler)
-        };
+        if (!final || !fetching) {
+            document.addEventListener('scroll', scrollHandler)
+            return function () {
+                document.removeEventListener('scroll', scrollHandler)
+            };
+        }
     }, [])
     const scrollHandler = (e: any) => {
-        if (!final && e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
+        if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
             setFetching(true)
         }
     }
 
     const getGamesWithOffset = useCallback(() => {
         if (fetching && !loading && !final) {
-            setPage(page+1)
             fetchGamesOffset({page, size})
-            setFetching(false)
-            if(totalElements < size) setFinal(true)
+            setFirstLoading(false)
         }
-    }, [fetching, loading])
+    }, [fetching])
 
     useEffect(() => {
         getGamesWithOffset()
     }, [getGamesWithOffset])
+
+
+    const offsetGamesTrigger = useCallback(() => {
+        if (!loading && !firstLoading) {
+            if (totalElements < size) setFinal(true)
+            else setFinal(false)
+            setPage(page + 1)
+            setFetching(false)
+        }
+    }, [totalElements])
+
+    useEffect(() => {
+        offsetGamesTrigger()
+    }, [offsetGamesTrigger])
 
     return (
         <div className="container">

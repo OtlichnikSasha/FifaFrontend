@@ -3,32 +3,28 @@ import {useActions} from "../hooks/useActions";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/block/loader";
-import {Notification} from "../components/block/notification";
 import {AddNewGames} from "../components/addNewGames";
 import {GamesCabinetList} from "../components/gamesCabinetList";
 
 export const Cabinet: FC = () => {
-    const [page, setPage] = useState(0)
+    const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
     const [fetching, setFetching] = useState(false)
+    const [checker, setChecker] = useState(false)
+    const [firstLoading, setFirstLoading] = useState(true)
     const size = 20;
     const {
         fetchUserCabinet,
         fetchEditUser,
         fetchGamesForCabinet,
         fetchGamesOffsetForCabinet,
-        clearUserState
     } = useActions()
     const {token} = useContext(AuthContext)
-    const [openNotification, setOpenNotification] = useState(false)
-    const [frontendError, setFrontendError] = useState('')
-    const [notificationStatus, setNotificationStatus] = useState('')
     const [userData, setUserData] = useState({
         id: 0,
         nameSurname: '',
         token: token
     })
-    const [checker, setChecker] = useState(false)
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
     const {user, loading} = useTypedSelector(state => state.user)
@@ -45,7 +41,7 @@ export const Cabinet: FC = () => {
 
     const getUserGames = useCallback(() => {
         if (!loading && user) {
-            fetchGamesForCabinet({id: user.id, page, size})
+            fetchGamesForCabinet({id: user.id, page: 0, size})
             setUserData({
                 ...userData,
                 id: user.id
@@ -57,8 +53,6 @@ export const Cabinet: FC = () => {
     useEffect(() => {
         getUserGames()
     }, [getUserGames])
-
-
 
     const openNewGamePlace = () => {
         if (open) {
@@ -82,7 +76,7 @@ export const Cabinet: FC = () => {
     }
 
     useEffect(() => {
-        if (!final) {
+        if (!final || !fetching) {
             document.addEventListener('scroll', scrollHandler)
             return function () {
                 document.removeEventListener('scroll', scrollHandler)
@@ -96,51 +90,34 @@ export const Cabinet: FC = () => {
     }
 
     const getGamesWithOffset = useCallback(() => {
-        if (fetching && !gamesLoading && !final) {
-            setPage(page + 1)
+        if (fetching && !gamesLoading && !final && user) {
             // @ts-ignore
             fetchGamesOffsetForCabinet({id: user.id, page, size})
-            setFetching(false)
-            if (totalElements < size) setFinal(true)
+            setFirstLoading(false)
         }
-    }, [fetching, gamesLoading])
+    }, [fetching])
 
     useEffect(() => {
         getGamesWithOffset()
     }, [getGamesWithOffset])
 
-    // const editUserChecker = useCallback(() => {
-    //     if (!loading && checker) {
-    //         if (status) {
-    //             return fetchUserCabinet({token})
-    //         }
-    //         if (!status && error) {
-    //             setFrontendError(error)
-    //             setOpenNotification(true)
-    //             setNotificationStatus("error")
-    //             return clearTimeout()
-    //         }
-    //     }
-    // }, [checker, loading])
-    //
-    // useEffect(() => {
-    //     editUserChecker()
-    // }, [editUserChecker])
+    const gamesOffsetTrigger = useCallback(() => {
+        if(!gamesLoading && !firstLoading){
+            if (totalElements < size) setFinal(true)
+            else setFinal(false)
+            setPage(page + 1)
+            setFetching(false)
+        }
+    }, [totalElements])
 
-    const clearTimeout = () => {
-        return setTimeout(() => {
-            setOpenNotification(false)
-            setFrontendError("")
-            setNotificationStatus("")
-            setChecker(false)
-            clearUserState()
-        }, 3000)
-    }
+    useEffect(() => {
+        gamesOffsetTrigger()
+    }, [gamesOffsetTrigger])
+
+
     if (loading) return <Loader/>
     return (
         <div className="container">
-            <Notification openNotification={openNotification} frontendError={frontendError}
-                          status={notificationStatus}/>
             {
                 !user?.nameSurname &&
                 <>

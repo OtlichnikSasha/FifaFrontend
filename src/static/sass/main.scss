@@ -79,7 +79,7 @@
 /* Notification */
 .notification {
   transform: translate(120%, 0);
-  position: absolute;
+  position: fixed;
   bottom: 40px;
   right: 15px;
   transition: transform .4s;
@@ -434,14 +434,12 @@
   width: 30%;
   font-weight: bold;
   position: relative;
-
   span {
     display: block;
+    margin-bottom: 10px;
   }
-
   .users_search_items {
     position: absolute;
-    top: 60px;
     width: 100%;
     background: #FFFFFF;
     padding: 10px 0;
