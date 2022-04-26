@@ -5,6 +5,7 @@ import {AuthContext} from "../context/AuthContext";
 import {Loader} from "../components/block/loader";
 import {AddNewGames} from "../components/addNewGames";
 import {GamesCabinetList} from "../components/gamesCabinetList";
+import {Notification} from "../components/block/notification";
 
 export const Cabinet: FC = () => {
     const [page, setPage] = useState(1)
@@ -12,6 +13,9 @@ export const Cabinet: FC = () => {
     const [fetching, setFetching] = useState(false)
     const [checker, setChecker] = useState(false)
     const [firstLoading, setFirstLoading] = useState(true)
+    const [openNotification, setOpenNotification] = useState(false)
+    const [frontendError, setFrontendError] = useState('')
+    const [notificationStatus, setNotificationStatus] = useState('')
     const size = 20;
     const {
         fetchUserCabinet,
@@ -27,7 +31,7 @@ export const Cabinet: FC = () => {
     })
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
-    const {user, loading} = useTypedSelector(state => state.user)
+    const {user, loading, status, error} = useTypedSelector(state => state.user)
     const {totalElements} = useTypedSelector(state => state.games)
     const gamesLoading = useTypedSelector(state => state.games.loading)
     const getUser = useCallback(() => {
@@ -114,10 +118,43 @@ export const Cabinet: FC = () => {
         gamesOffsetTrigger()
     }, [gamesOffsetTrigger])
 
+    const editUserChecker = useCallback(() => {
+        if(!loading && checker){
+            if(status){
+                setFrontendError("Данные успешно изменены")
+                setOpenNotification(true)
+                setNotificationStatus("success")
+                return clearTimeout()
+            }
+            if(!status && error){
+                setFrontendError(error)
+                setOpenNotification(true)
+                setNotificationStatus("error")
+                return clearTimeout()
+            }
+        }
+    }, [checker])
+
+    useEffect(() => {
+        editUserChecker()
+    }, [editUserChecker])
+
+    const clearTimeout = () => {
+        setTimeout(() => {
+            setFrontendError('')
+            setOpenNotification(false)
+            setNotificationStatus("")
+            setChecker(false)
+            fetchUserCabinet({token})
+        }, 3000)
+
+    }
 
     if (loading) return <Loader/>
     return (
         <div className="container">
+            <Notification openNotification={openNotification} frontendError={frontendError}
+                          status={notificationStatus}/>
             {
                 !user?.nameSurname &&
                 <>

@@ -8,7 +8,6 @@ const initialState: LoginState = {
     username: null,
     isAuthenticated: false,
     token: '',
-    player_id: 0
 }
 
 export const authLogin = createAsyncThunk(
@@ -34,7 +33,6 @@ const userLoginSlice = createSlice({
             state.loginError = ''
             state.username = null
             state.isAuthenticated = false
-            state.player_id = 0
         }
     },
     extraReducers: (builder) => {
@@ -48,8 +46,6 @@ const userLoginSlice = createSlice({
                 state.username = action.payload.data?.username
                 // @ts-ignore
                 state.token = action.payload.data?.token
-                // @ts-ignore
-                state.player_id = action.payload.data?.player_id
                 state.loginError = action.payload.error
                 state.loading = false
             })

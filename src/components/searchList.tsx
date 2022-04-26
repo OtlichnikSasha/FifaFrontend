@@ -13,18 +13,18 @@ export const SearchList: FC<SearchListProps> = ({changeRival}) => {
             {
                 !loading && users.length ? users.map(searchUser => {
                         return (
-                            <>
+                            <div key={searchUser?.id}>
                                 {
                                     searchUser.id !== user?.id ?
-                                        <div className="user_search_item" key={searchUser?.id}
+                                        <div className="user_search_item"
                                              onClick={() => changeRival(searchUser)}>
                                             {searchUser?.username}
                                         </div>
                                         :
                                         <></>
                                 }
+                            </div>
 
-                            </>
                         )
                     })
                     :

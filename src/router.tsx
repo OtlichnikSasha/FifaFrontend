@@ -11,7 +11,6 @@ import {Results} from "./pages/Results";
 import {User} from "./pages/User";
 
 export const useRouter = (isAuthenticated: boolean) => {
-    console.log('isAuthenticatedRouter', isAuthenticated)
     if (isAuthenticated) {
         return (
             <Routes>

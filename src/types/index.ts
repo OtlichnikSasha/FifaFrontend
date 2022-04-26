@@ -51,5 +51,4 @@ export interface LoginState{
     username: string | null,
     isAuthenticated: boolean,
     token: string | null,
-    player_id: number
 }

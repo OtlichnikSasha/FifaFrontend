@@ -87,7 +87,7 @@ const userSlice = createSlice({
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload.data
-                state.status = true
+                state.status = action.payload.status
                 state.error = action.payload.error
             })
             .addCase(fetchUser.rejected, state => {
@@ -102,7 +102,7 @@ const userSlice = createSlice({
                 state.loading = false
                 // @ts-ignore
                 state.user = action.payload.data
-                state.status = true
+                state.status = action.payload.status
                 state.error = action.payload.error
             })
             .addCase(fetchEditUser.rejected, state => {

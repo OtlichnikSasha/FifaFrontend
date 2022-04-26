@@ -12,7 +12,7 @@ export const AuthenticationPage: FC = () => {
     const auth = useContext(AuthContext)
     const {authLogin, clearLoginUserState} = useActions()
     const navigate = useNavigate();
-    const {username, loading, token, loginError, player_id} = useTypedSelector(state => state.userLogin)
+    const {username, loading, token, loginError} = useTypedSelector(state => state.userLogin)
     const [authData, setAuthData] = useState({
         username: '',
         password: '',
@@ -57,7 +57,7 @@ export const AuthenticationPage: FC = () => {
     const checkerError = useCallback(() => {
         console.log(loading, username, token, loginError)
         if(!loading && username && token){
-            auth.login(token, username, player_id)
+            auth.login(token, username)
             clearLoginUserState()
             return navigate("/topPlayers")
         }
