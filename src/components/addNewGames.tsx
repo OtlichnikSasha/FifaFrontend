@@ -134,7 +134,7 @@ export const AddNewGames = () => {
                 <div className="user_new_game__item"/>
             </div>
             {
-                rival && scoreRival && scoreUser ?
+                rival.hasOwnProperty('id') && scoreRival && scoreUser ?
                     <div className="default_btn" onClick={addMatch}>
                         Сохранить
                     </div>

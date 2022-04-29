@@ -19,7 +19,7 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
                         🥇
                     </div>
                     <div className="heading_players">
-                        {user.username} ({user.rating})
+                        {user.nameSurname ? user.nameSurname : user.username} ({user.rating})
                     </div>
                 </Link>
             }
@@ -32,7 +32,7 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
                         🥈
                     </div>
                     <div className="heading_players">
-                        {user.username} ({user.rating})
+                        {user.nameSurname ? user.nameSurname : user.username} ({user.rating})
                     </div>
                 </Link>
             }
@@ -45,7 +45,7 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
                         🥉
                     </div>
                     <div className="heading_players">
-                        {user.username} ({user.rating})
+                        {user.nameSurname ? user.nameSurname : user.username} ({user.rating})
                     </div>
                 </Link>
             }
@@ -59,7 +59,7 @@ export const UserCard: FC<PropsTypes> = ({i, user}) => {
                         {i + 1}
                     </div>
                     <div className="heading_players">
-                        {user.username} ({user.rating})
+                        {user.nameSurname ? user.nameSurname : user.username} ({user.rating})
                     </div>
                 </Link>
             }

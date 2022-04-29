@@ -55,7 +55,6 @@ export const AuthenticationPage: FC = () => {
     }
 
     const checkerError = useCallback(() => {
-        console.log(loading, username, token, loginError)
         if(!loading && username && token){
             auth.login(token, username)
             clearLoginUserState()
