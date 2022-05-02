@@ -19,7 +19,8 @@ export interface UsersState{
     users: UserEntity[],
     loading: boolean,
     error: string | null,
-    status: boolean | null
+    status: boolean | null,
+    totalElements: number
 }
 
 export interface UserState{

@@ -6,7 +6,8 @@ const initialState : UsersState = {
     users: [],
     status: null,
     error: null,
-    loading: false
+    loading: false,
+    totalElements: 0
 };
 export interface UsersData{
     id? : number
@@ -42,7 +43,9 @@ const usersSlice = createSlice({
                 state.loading = false
                 // @ts-ignore
                 state.users = action.payload.data.content
-                state.status = true
+                // @ts-ignore
+                state.totalElements = action.payload.data.totalElements
+                state.status = action.payload.status
             })
             .addCase(fetchUsers.rejected, state => {
                 state.loading = false
@@ -51,10 +54,13 @@ const usersSlice = createSlice({
             .addCase(fetchUsersOffset.pending, state => {
                 state.loading = true
             })
-            .addCase(fetchUsersOffset.fulfilled, (state, action) => {
+            .addCase(fetchUsersOffset.fulfilled, (state:UsersState, action) => {
                 state.loading = false
-                state.users = state.users.concat(action.payload.data)
-                state.status = true
+                // @ts-ignore
+                state.users = state.users.concat(action.payload.data.content)
+                //@ts-ignore
+                state.totalElements = action.payload.data.totalElements
+                state.status = action.payload.status
             })
             .addCase(fetchUsersOffset.rejected, state => {
                 state.loading = false

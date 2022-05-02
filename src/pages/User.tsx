@@ -12,7 +12,6 @@ interface UserParams {
 export const User: FC = () => {
     const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
-    const [firstLoading, setFirstLoading] = useState(true)
     const size = 20;
     // @ts-ignore
     const {id}: UserParams = useParams()
@@ -33,16 +32,15 @@ export const User: FC = () => {
     const {totalElements} = useTypedSelector(state => state.games)
     const gamesLoading = useTypedSelector(state => state.games.loading)
     useEffect(() => {
-        if (!final || !fetching) {
             document.addEventListener('scroll', scrollHandler)
             return function () {
                 document.removeEventListener('scroll', scrollHandler)
             };
-        }
     }, [])
     const scrollHandler = (e: any) => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
             setFetching(true)
+
         }
     }
 
@@ -50,7 +48,7 @@ export const User: FC = () => {
         if (fetching && !gamesLoading && !final) {
             // @ts-ignore
             fetchGamesOffsetForUser({id, page, size})
-            setFirstLoading(false)
+            setPage(page + 1)
         }
     }, [fetching])
 
@@ -59,13 +57,12 @@ export const User: FC = () => {
     }, [getGamesWithOffset])
 
     const offsetGamesTrigger = useCallback(() => {
-        if (!gamesLoading && !firstLoading) {
+        if (!gamesLoading) {
             if (totalElements < size) setFinal(true)
             else setFinal(false)
-            setPage(page + 1)
             setFetching(false)
         }
-    }, [totalElements])
+    }, [totalElements, gamesLoading])
 
     useEffect(() => {
         offsetGamesTrigger()

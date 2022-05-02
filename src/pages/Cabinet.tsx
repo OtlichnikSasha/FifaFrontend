@@ -6,13 +6,13 @@ import {Loader} from "../components/block/loader";
 import {AddNewGames} from "../components/addNewGames";
 import {GamesCabinetList} from "../components/gamesCabinetList";
 import {Notification} from "../components/block/notification";
+import {useNavigate} from "react-router-dom";
 
 export const Cabinet: FC = () => {
     const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
     const [fetching, setFetching] = useState(false)
     const [checker, setChecker] = useState(false)
-    const [firstLoading, setFirstLoading] = useState(true)
     const [openNotification, setOpenNotification] = useState(false)
     const [frontendError, setFrontendError] = useState('')
     const [notificationStatus, setNotificationStatus] = useState('')
@@ -22,6 +22,7 @@ export const Cabinet: FC = () => {
         fetchEditUser,
         fetchGamesForCabinet,
         fetchGamesOffsetForCabinet,
+        clearUserState
     } = useActions()
     const {token} = useContext(AuthContext)
     const [userData, setUserData] = useState({
@@ -29,6 +30,8 @@ export const Cabinet: FC = () => {
         nameSurname: '',
         token: token
     })
+    const navigate = useNavigate()
+    const auth = useContext(AuthContext)
     const [open, setOpen] = useState(false)
     const [btnText, setBtnText] = useState('Заполнить данные о сыгранной игре')
     const {user, loading, status, error} = useTypedSelector(state => state.user)
@@ -36,14 +39,24 @@ export const Cabinet: FC = () => {
     const gamesLoading = useTypedSelector(state => state.games.loading)
     const getUser = useCallback(() => {
         document.title = "Личный кабинет"
+        if (!token) {
+            auth.logout()
+            clearUserState()
+            return navigate("/topPlayers")
+        }
         fetchUserCabinet({token})
-    }, [])
+    }, [token])
 
     useEffect(() => {
         getUser()
     }, [getUser])
 
     const getUserGames = useCallback(() => {
+        if (!loading && !status && error) {
+            auth.logout()
+            clearUserState()
+            return navigate("/topPlayers")
+        }
         if (!loading && user) {
             fetchGamesForCabinet({id: user.id, page: 0, size})
             setUserData({
@@ -80,12 +93,10 @@ export const Cabinet: FC = () => {
     }
 
     useEffect(() => {
-        if (!final || !fetching) {
-            document.addEventListener('scroll', scrollHandler)
-            return function () {
-                document.removeEventListener('scroll', scrollHandler)
-            };
-        }
+        document.addEventListener('scroll', scrollHandler)
+        return function () {
+            document.removeEventListener('scroll', scrollHandler)
+        };
     }, [])
     const scrollHandler = (e: any) => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
@@ -97,7 +108,7 @@ export const Cabinet: FC = () => {
         if (fetching && !gamesLoading && !final && user) {
             // @ts-ignore
             fetchGamesOffsetForCabinet({id: user.id, page, size})
-            setFirstLoading(false)
+            setPage(page + 1)
         }
     }, [fetching])
 
@@ -106,27 +117,26 @@ export const Cabinet: FC = () => {
     }, [getGamesWithOffset])
 
     const gamesOffsetTrigger = useCallback(() => {
-        if(!gamesLoading && !firstLoading){
+        if (!gamesLoading) {
             if (totalElements < size) setFinal(true)
             else setFinal(false)
-            setPage(page + 1)
             setFetching(false)
         }
-    }, [totalElements])
+    }, [totalElements, gamesLoading])
 
     useEffect(() => {
         gamesOffsetTrigger()
     }, [gamesOffsetTrigger])
 
     const editUserChecker = useCallback(() => {
-        if(!loading && checker){
-            if(status){
+        if (!loading && checker) {
+            if (status) {
                 setFrontendError("Данные успешно изменены")
                 setOpenNotification(true)
                 setNotificationStatus("success")
                 return clearTimeout()
             }
-            if(!status && error){
+            if (!status && error) {
                 setFrontendError(error)
                 setOpenNotification(true)
                 setNotificationStatus("error")

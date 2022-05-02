@@ -25,7 +25,6 @@ export const fetchGames = createAsyncThunk(
 export const fetchGamesOffset = createAsyncThunk(
     'games/fetchGamesOffset',
     async (data: object) => {
-        console.log('data', data)
         return await getGames(data);
     }
 )

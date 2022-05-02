@@ -6,7 +6,8 @@ const initialState : UsersState = {
     users: [],
     status: null,
     error: null,
-    loading: false
+    loading: false,
+    totalElements: 0
 };
 interface CabinetHeaders{
     token: string

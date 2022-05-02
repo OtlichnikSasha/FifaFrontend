@@ -6,7 +6,6 @@ import {useTypedSelector} from "../hooks/useTypedSelector";
 export const Results: FC = () => {
     const [page, setPage] = useState(1)
     const [final, setFinal] = useState(false)
-    const [firstLoading, setFirstLoading] = useState(true)
     const size = 20;
     const [fetching, setFetching] = useState(false)
     const getGames = useCallback(() => {
@@ -21,12 +20,10 @@ export const Results: FC = () => {
     const {fetchGames, fetchGamesOffset} = useActions()
     const {loading, totalElements} = useTypedSelector(state => state.games)
     useEffect(() => {
-        if (!final || !fetching) {
-            document.addEventListener('scroll', scrollHandler)
-            return function () {
-                document.removeEventListener('scroll', scrollHandler)
-            };
-        }
+        document.addEventListener('scroll', scrollHandler)
+        return function () {
+            document.removeEventListener('scroll', scrollHandler)
+        };
     }, [])
     const scrollHandler = (e: any) => {
         if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 150) {
@@ -37,7 +34,7 @@ export const Results: FC = () => {
     const getGamesWithOffset = useCallback(() => {
         if (fetching && !loading && !final) {
             fetchGamesOffset({page, size})
-            setFirstLoading(false)
+            setPage(page + 1)
         }
     }, [fetching])
 
@@ -47,13 +44,12 @@ export const Results: FC = () => {
 
 
     const offsetGamesTrigger = useCallback(() => {
-        if (!loading && !firstLoading) {
+        if (!loading) {
             if (totalElements < size) setFinal(true)
             else setFinal(false)
-            setPage(page + 1)
             setFetching(false)
         }
-    }, [totalElements])
+    }, [totalElements, loading])
 
     useEffect(() => {
         offsetGamesTrigger()

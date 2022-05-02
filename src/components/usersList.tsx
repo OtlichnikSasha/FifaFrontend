@@ -1,11 +1,10 @@
 import React, {FC} from 'react';
 import {useTypedSelector} from "../hooks/useTypedSelector";
-import {Loader} from "./block/loader";
 import {UserCard} from "./userCard";
+import {Empty} from "./block/empty";
 
 export const UsersList: FC = () => {
     const {users, loading} = useTypedSelector(state => state.users)
-    if (loading) return <Loader/>
     return (
         <>
             {
@@ -13,8 +12,9 @@ export const UsersList: FC = () => {
                         return (<UserCard i={i} user={user} key={user.id}/>)
                     })
                     :
-                    <>Пусто!</>
+                    <Empty label="Информации об игроках пока нет" loading={loading}/>
             }
+            {loading && <div className="preloader_text"/> }
         </>
     );
 };

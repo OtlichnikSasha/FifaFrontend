@@ -13,14 +13,12 @@ export const Header: FC = () => {
         mobile_menu.current.classList.toggle("_active")
         // @ts-ignore
         nav.current.classList.toggle("open")
-        document.body.classList.toggle("hidden")
     }
     const closeMenu = () => {
         // @ts-ignore
         mobile_menu.current.classList.toggle("_active")
         // @ts-ignore
         nav.current.classList.toggle("open")
-        document.body.classList.toggle("hidden")
     }
 
     const exit = async () => {
